@@ -19,6 +19,7 @@ await SmsAutoFill().listenForCode;
 This will listen for the SMS with the code during 5 minutes and when received, autofill the following widget.
 
 ### PinFieldAutoFill
+![PinFieldAutoFill](https://github.com/jaumard/sms_autofill/blob/master/docs/pin.png?raw=true)
 ```dart
 PinFieldAutoFill(
                 decoration: // UnderlineDecoration, BoxLooseDecoration or BoxTightDecoration see https://github.com/TinoGuo/pin_input_text_field for more info,
@@ -31,6 +32,7 @@ PinFieldAutoFill(
 
 
 ### TextFieldPinAutoFill
+![TextFieldPinAutoFill](https://github.com/jaumard/sms_autofill/blob/master/docs/pinsimple.png?raw=true)
 ```dart
 TextFieldPinAutoFill(
                 decoration: // basic InputDecoration
@@ -58,7 +60,7 @@ FA+9qCX9VSu
 
 ### PhoneFieldHint [Android only]
 PhoneFieldHint is a widget that will allow you ask for system phone number and autofill the widget if a phone is choosen by the user.
-
+![Phone hint](https://github.com/jaumard/sms_autofill/blob/master/docs/phone.png?raw=true)
 
 ### Custom CodeAutoFill 
 If you want to create a custom widget that will autofill with the sms code, you can use the CodeAutoFill mixin that will offer you:
