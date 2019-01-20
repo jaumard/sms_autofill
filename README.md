@@ -60,6 +60,7 @@ FA+9qCX9VSu
 
 ### PhoneFieldHint [Android only]
 PhoneFieldHint is a widget that will allow you ask for system phone number and autofill the widget if a phone is choosen by the user.
+
 ![Phone hint](https://github.com/jaumard/sms_autofill/blob/master/docs/phone.png?raw=true)
 
 ### Custom CodeAutoFill 
