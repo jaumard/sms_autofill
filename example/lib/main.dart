@@ -35,7 +35,8 @@ class _MyAppState extends State<MyApp> {
               PhoneFieldHint(autofocus: true),
               Spacer(),
               PinFieldAutoFill(
-                decoration: UnderlineDecoration(textStyle: TextStyle(fontSize: 20, color: Colors.black)),
+                decoration: UnderlineDecoration(
+                    textStyle: TextStyle(fontSize: 20, color: Colors.black)),
                 currentCode: _code,
               ),
               Spacer(),
