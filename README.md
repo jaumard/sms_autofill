@@ -1,6 +1,6 @@
 # sms_autofill
 
-Flutter plugin to provide SMS code autofill support. 
+[![pub package](https://img.shields.io/pub/v/sms_autofill.svg)](https://pub.dartlang.org/packages/sms_autofill) Flutter plugin to provide SMS code autofill support. 
 
 For iOS, this package is not needed as the SMS autofill is provided by default, but not for Android, that's where this package is useful.
 
@@ -19,7 +19,7 @@ await SmsAutoFill().listenForCode;
 This will listen for the SMS with the code during 5 minutes and when received, autofill the following widget.
 
 ### PinFieldAutoFill
-![PinFieldAutoFill](https://github.com/jaumard/sms_autofill/blob/master/docs/pin.png?raw=true)
+![PinFieldAutoFill](https://github.com/jaumard/sms_autofill/blob/master/doc/pin.png?raw=true)
 ```dart
 PinFieldAutoFill(
                 decoration: // UnderlineDecoration, BoxLooseDecoration or BoxTightDecoration see https://github.com/TinoGuo/pin_input_text_field for more info,
@@ -32,7 +32,7 @@ PinFieldAutoFill(
 
 
 ### TextFieldPinAutoFill
-![TextFieldPinAutoFill](https://github.com/jaumard/sms_autofill/blob/master/docs/pinsimple.png?raw=true)
+![TextFieldPinAutoFill](https://github.com/jaumard/sms_autofill/blob/master/doc/pinsimple.png?raw=true)
 ```dart
 TextFieldPinAutoFill(
                 decoration: // basic InputDecoration
@@ -61,7 +61,7 @@ FA+9qCX9VSu
 ### PhoneFieldHint [Android only]
 PhoneFieldHint is a widget that will allow you ask for system phone number and autofill the widget if a phone is choosen by the user.
 
-![Phone hint](https://github.com/jaumard/sms_autofill/blob/master/docs/phone.png?raw=true)
+![Phone hint](https://github.com/jaumard/sms_autofill/blob/master/doc/phone.png?raw=true)
 
 ### Custom CodeAutoFill 
 If you want to create a custom widget that will autofill with the sms code, you can use the CodeAutoFill mixin that will offer you:

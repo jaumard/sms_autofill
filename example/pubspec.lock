@@ -70,12 +70,10 @@ packages:
   pin_input_text_field:
     dependency: transitive
     description:
-      path: "."
-      ref: dev
-      resolved-ref: "2d52145c95e7e5a23e8ab974f88df79f4116936d"
-      url: "https://github.com/TinoGuo/pin_input_text_field"
-    source: git
-    version: "0.1.1"
+      name: pin_input_text_field
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.0"
   quiver:
     dependency: transitive
     description:
