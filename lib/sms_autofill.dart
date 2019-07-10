@@ -111,7 +111,9 @@ class _PinFieldAutoFillState extends State<PinFieldAutoFill> with CodeAutoFill {
   @override
   void dispose() {
     cancel();
-    controller.dispose();
+    if (!controller.autoDispose) {
+      controller.dispose();
+    }
     super.dispose();
   }
 }
