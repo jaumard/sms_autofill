@@ -30,6 +30,18 @@ public class AppSignatureHelper extends ContextWrapper {
         super(context);
     }
 
+    /** 
+    * Get first app signature.
+    */
+    public String getAppSignature(){
+        ArrayList<String> appSignatures = this.getAppSignatures();
+        if (!appSignatures.isEmpty()) {
+            return appSignatures.get(0);
+        }else{
+            return "NA";
+        }
+    }
+
     /**
      * Get all the app signatures for the current package
      * @return

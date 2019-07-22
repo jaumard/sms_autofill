@@ -27,7 +27,6 @@ import com.google.android.gms.tasks.Task;
 import java.lang.ref.WeakReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.ArrayList;
 
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
@@ -118,9 +117,8 @@ public class SmsAutoFillPlugin implements MethodCallHandler {
                 break;
             case "getAppSignature":
                 AppSignatureHelper signatureHelper = new AppSignatureHelper(registrar.context());
-                ArrayList<String> appSignatures = signatureHelper.getAppSignatures();
-                String signature = appSignatures.get(0);
-                result.success(signature);
+                String appSignature = signatureHelper.getAppSignature();
+                result.success(appSignature);
                 break;
             default:
                 result.notImplemented();
