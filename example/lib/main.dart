@@ -68,7 +68,7 @@ class _MyAppState extends State<MyApp> {
               SizedBox(
                 height: 4.0
               ),
-              Text("App Signature : ${signature}"),
+              Text("App Signature : $signature"),
               SizedBox(
                 height: 4.0
               ),

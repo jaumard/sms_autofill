@@ -17,6 +17,7 @@ class SmsAutoFill {
       if (method.method == 'smscode') {
         _code.add(method.arguments);
       }
+      return null;
     });
   }
 

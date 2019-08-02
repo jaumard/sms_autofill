@@ -26,7 +26,7 @@ packages:
       name: pin_input_text_field
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.0"
+    version: "1.0.1"
   sky_engine:
     dependency: transitive
     description: flutter
