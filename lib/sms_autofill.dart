@@ -30,6 +30,11 @@ class SmsAutoFill {
   Future<void> get listenForCode async {
     await _channel.invokeMethod('listenForCode');
   }
+
+  Future<String> get getAppSignature async {
+    final String appSignature = await _channel.invokeMethod('getAppSignature');
+    return appSignature;
+  }
 }
 
 class PinFieldAutoFill extends StatefulWidget {

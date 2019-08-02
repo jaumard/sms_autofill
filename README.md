@@ -70,3 +70,5 @@ If you want to create a custom widget that will autofill with the sms code, you 
 - `cancel()` to dispose the subscription of the SMS code from the native plugin, need to be called on your `dispose`.
 - `codeUpdated()` called when the code is received, you can access the value with the field `code`.
 
+### App Signature
+To get the app signature at runtime just call the getter `getAppSignature` on `SmsAutoFill`. You can also find the sample code in example app.

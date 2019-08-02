@@ -35,6 +35,7 @@ import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 
+import com.jaumard.smsautofill.AppSignatureHelper;
 /**
  * SmsAutoFillPlugin
  */
@@ -45,10 +46,13 @@ public class SmsAutoFillPlugin implements MethodCallHandler {
     private Result pendingHintResult;
     private MethodChannel channel;
     private SmsBroadcastReceiver broadcastReceiver;
+    private final PluginRegistry.Registrar registrar;
+
 
     private SmsAutoFillPlugin(MethodChannel channel, Registrar registrar) {
         this.activity = registrar.activity();
         this.channel = channel;
+        this.registrar = registrar;
         registrar.addActivityResultListener(new PluginRegistry.ActivityResultListener() {
 
             @Override
@@ -110,6 +114,11 @@ public class SmsAutoFillPlugin implements MethodCallHandler {
             case "getPlatformVersion":
                 pendingHintResult = result;
                 requestHint();
+                break;
+            case "getAppSignature":
+                AppSignatureHelper signatureHelper = new AppSignatureHelper(registrar.context());
+                String appSignature = signatureHelper.getAppSignature();
+                result.success(appSignature);
                 break;
             default:
                 result.notImplemented();

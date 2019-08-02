@@ -11,6 +11,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String _code;
+  String signature = "{{ app signature }}";
 
   @override
   void initState() {
@@ -58,6 +59,27 @@ class _MyAppState extends State<MyApp> {
                   });
                 },
               ),
+              SizedBox(
+                height: 8.0
+              ),
+              Divider(
+                height: 1.0
+              ),
+              SizedBox(
+                height: 4.0
+              ),
+              Text("App Signature : ${signature}"),
+              SizedBox(
+                height: 4.0
+              ),
+              RaisedButton(
+                child: Text('Get app signature'),
+                onPressed: () async {
+                  signature = await SmsAutoFill().getAppSignature;
+                  setState((){});
+                },
+              ),
+
             ],
           ),
         ),
