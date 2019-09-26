@@ -20,7 +20,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     SmsAutoFill().unregisterListener();
     super.dispose();
   }
