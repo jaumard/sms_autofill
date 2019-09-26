@@ -32,6 +32,10 @@ class SmsAutoFill {
     await _channel.invokeMethod('listenForCode');
   }
 
+  Future<void> unregisterListener() async {
+    await _channel.invokeMethod('unregisterListener');
+  }
+
   Future<String> get getAppSignature async {
     final String appSignature = await _channel.invokeMethod('getAppSignature');
     return appSignature;

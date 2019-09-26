@@ -115,6 +115,10 @@ public class SmsAutoFillPlugin implements MethodCallHandler {
                 pendingHintResult = result;
                 requestHint();
                 break;
+            case "unregisterListener":
+                activity.unregisterReceiver(broadcastReceiver);
+                result.success("successfully unregister receiver");
+                break;
             case "getAppSignature":
                 AppSignatureHelper signatureHelper = new AppSignatureHelper(registrar.context());
                 String appSignature = signatureHelper.getAppSignature();
