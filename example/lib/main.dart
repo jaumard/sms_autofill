@@ -19,6 +19,12 @@ class _MyAppState extends State<MyApp> {
   }
 
   @override
+  void dispose() {
+    SmsAutoFill().unregisterListener();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.light(),
