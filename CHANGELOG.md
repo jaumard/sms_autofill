@@ -1,3 +1,8 @@
+## 1.1.1
+
+* Fix Android X compilation issue 
+* update 
+
 ## 1.1.0
 
 * Fix Android X compilation issue 
