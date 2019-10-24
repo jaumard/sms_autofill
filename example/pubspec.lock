@@ -80,7 +80,7 @@ packages:
       name: pin_input_text_field
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.1"
+    version: "2.1.0"
   quiver:
     dependency: transitive
     description:
@@ -99,7 +99,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "1.1.0"
+    version: "1.1.1"
   source_span:
     dependency: transitive
     description:
