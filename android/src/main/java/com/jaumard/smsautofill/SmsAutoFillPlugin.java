@@ -40,7 +40,7 @@ import com.jaumard.smsautofill.AppSignatureHelper;
  * SmsAutoFillPlugin
  */
 public class SmsAutoFillPlugin implements MethodCallHandler {
-    private static final int PHONE_HINT_REQUEST = 101012;
+    private static final int PHONE_HINT_REQUEST = 11012;
 
     private Activity activity;
     private Result pendingHintResult;
