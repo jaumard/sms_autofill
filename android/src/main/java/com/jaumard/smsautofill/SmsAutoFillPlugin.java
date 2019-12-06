@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.content.IntentSender;
 import android.os.Build;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.auth.api.Auth;
@@ -36,6 +37,7 @@ import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 import com.jaumard.smsautofill.AppSignatureHelper;
+
 /**
  * SmsAutoFillPlugin
  */
@@ -85,7 +87,7 @@ public class SmsAutoFillPlugin implements MethodCallHandler {
     }
 
     @Override
-    public void onMethodCall(MethodCall call, final Result result) {
+    public void onMethodCall(MethodCall call, @NonNull final Result result) {
         switch (call.method) {
             case "requestPhoneHint":
                 pendingHintResult = result;
@@ -160,8 +162,7 @@ public class SmsAutoFillPlugin implements MethodCallHandler {
             if (SmsRetriever.SMS_RETRIEVED_ACTION.equals(intent.getAction())) {
                 if (plugin.get() == null) {
                     return;
-                }
-                else {
+                } else {
                     plugin.get().activity.unregisterReceiver(this);
                 }
 

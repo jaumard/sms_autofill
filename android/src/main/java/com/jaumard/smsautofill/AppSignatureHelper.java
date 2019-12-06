@@ -7,7 +7,7 @@ import android.content.pm.Signature;
 import android.util.Base64;
 import android.util.Log;
 
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -15,8 +15,8 @@ import java.util.Arrays;
 
 /**
  * This is a helper class to generate your message hash to be included in your SMS message.
- *
- * Without the correct hash, your app won't recieve the message callback. This only needs to be
+ * <p>
+ * Without the correct hash, your app won't receive the message callback. This only needs to be
  * generated once per app and stored. Then you can remove this helper class from your code.
  */
 public class AppSignatureHelper extends ContextWrapper {
@@ -30,20 +30,21 @@ public class AppSignatureHelper extends ContextWrapper {
         super(context);
     }
 
-    /** 
-    * Get first app signature.
-    */
-    public String getAppSignature(){
+    /**
+     * Get first app signature.
+     */
+    public String getAppSignature() {
         ArrayList<String> appSignatures = this.getAppSignatures();
         if (!appSignatures.isEmpty()) {
             return appSignatures.get(0);
-        }else{
+        } else {
             return "NA";
         }
     }
 
     /**
      * Get all the app signatures for the current package
+     *
      * @return
      */
     public ArrayList<String> getAppSignatures() {
@@ -73,7 +74,7 @@ public class AppSignatureHelper extends ContextWrapper {
         String appInfo = packageName + " " + signature;
         try {
             MessageDigest messageDigest = MessageDigest.getInstance(HASH_TYPE);
-            messageDigest.update(appInfo.getBytes(StandardCharsets.UTF_8));
+            messageDigest.update(appInfo.getBytes(Charset.forName("UTF-8")));
             byte[] hashSignature = messageDigest.digest();
 
             // truncated into NUM_HASHED_BYTES
