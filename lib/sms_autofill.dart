@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pin_input_text_field/pin_input_text_field.dart';
 
+export 'package:pin_input_text_field/pin_input_text_field.dart';
+
 class SmsAutoFill {
   static SmsAutoFill _singleton;
   static const MethodChannel _channel = const MethodChannel('sms_autofill');
@@ -159,7 +161,9 @@ class _PhoneFieldHintState extends State<PhoneFieldHint> {
     _focusNode.addListener(() async {
       if (_focusNode.hasFocus && !_hintShown) {
         _hintShown = true;
-        await _askPhoneHint();
+        scheduleMicrotask(() {
+          _askPhoneHint();
+        });
       }
     });
     super.initState();
