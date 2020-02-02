@@ -8,7 +8,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.0'
+        classpath 'com.android.tools.build:gradle:3.5.3'
     }
 }
 
@@ -34,6 +34,6 @@ android {
 }
 
 dependencies {
-    implementation 'com.google.android.gms:play-services-auth:16.0.1'
-    implementation 'androidx.core:core:1.0.2'
+    implementation 'com.google.android.gms:play-services-auth:17.0.0'
+    implementation 'androidx.core:core:1.1.0'
 }

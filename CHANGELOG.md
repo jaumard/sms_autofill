@@ -1,3 +1,8 @@
+## 1.2.0
+
+* Compatibility with last flutter stable
+* update deps
+
 ## 1.1.1
 
 * Fix Android X compilation issue 
