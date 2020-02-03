@@ -211,11 +211,13 @@ class TextFieldPinAutoFill extends StatefulWidget {
   final Function(String) onCodeSubmitted;
   final Function(String) onCodeChanged;
   final InputDecoration decoration;
+  final bool obscureText;
   final TextStyle style;
 
   const TextFieldPinAutoFill({
     Key key,
     this.focusNode,
+    this.obscureText = false,
     this.onCodeSubmitted,
     this.style,
     this.onCodeChanged,
@@ -265,6 +267,7 @@ class _TextFieldPinAutoFillState extends State<TextFieldPinAutoFill> with CodeAu
       onChanged: widget.onCodeChanged,
       keyboardType: TextInputType.numberWithOptions(),
       controller: _textController,
+      obscureText: widget.obscureText,
     );
   }
 
