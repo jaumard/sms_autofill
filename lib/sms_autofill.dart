@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pin_input_text_field/pin_input_text_field.dart';
 
+export 'package:pin_input_text_field/pin_input_text_field.dart';
+
 class SmsAutoFill {
   static SmsAutoFill _singleton;
   static const MethodChannel _channel = const MethodChannel('sms_autofill');
@@ -159,7 +161,9 @@ class _PhoneFieldHintState extends State<PhoneFieldHint> {
     _focusNode.addListener(() async {
       if (_focusNode.hasFocus && !_hintShown) {
         _hintShown = true;
-        await _askPhoneHint();
+        scheduleMicrotask(() {
+          _askPhoneHint();
+        });
       }
     });
     super.initState();
@@ -207,11 +211,13 @@ class TextFieldPinAutoFill extends StatefulWidget {
   final Function(String) onCodeSubmitted;
   final Function(String) onCodeChanged;
   final InputDecoration decoration;
+  final bool obscureText;
   final TextStyle style;
 
   const TextFieldPinAutoFill({
     Key key,
     this.focusNode,
+    this.obscureText = false,
     this.onCodeSubmitted,
     this.style,
     this.onCodeChanged,
@@ -261,6 +267,7 @@ class _TextFieldPinAutoFillState extends State<TextFieldPinAutoFill> with CodeAu
       onChanged: widget.onCodeChanged,
       keyboardType: TextInputType.numberWithOptions(),
       controller: _textController,
+      obscureText: widget.obscureText,
     );
   }
 

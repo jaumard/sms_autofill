@@ -1,3 +1,9 @@
+## 1.2.0
+
+* Compatibility with last flutter stable
+* add obscureText to TextFieldPinAutoFill
+* update deps
+
 ## 1.1.1
 
 * Fix Android X compilation issue 
