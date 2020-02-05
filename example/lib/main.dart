@@ -29,6 +29,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       theme: ThemeData.light(),
       home: Scaffold(
+        resizeToAvoidBottomPadding: false,
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
@@ -39,7 +40,7 @@ class _MyAppState extends State<MyApp> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              PhoneFieldHint(autofocus: true),
+              PhoneFieldHint(),
               Spacer(),
               PinFieldAutoFill(
                 decoration: UnderlineDecoration(
