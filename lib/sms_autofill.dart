@@ -249,6 +249,10 @@ mixin CodeAutoFill {
     _subscription?.cancel();
   }
 
+  Future<void> unregisterListener() async {
+    await _autoFill.unregisterListener();
+  }
+
   void codeUpdated();
 }
 
