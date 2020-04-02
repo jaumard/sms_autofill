@@ -1,3 +1,7 @@
+## 1.2.1
+
+* fix mixin usage
+
 ## 1.2.0
 
 * Compatibility with last flutter stable
