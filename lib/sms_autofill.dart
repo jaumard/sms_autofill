@@ -243,6 +243,7 @@ mixin CodeAutoFill {
       this.code = code;
       codeUpdated();
     });
+    _autoFill.listenForCode;
   }
 
   void cancel() {
