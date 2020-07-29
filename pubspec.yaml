@@ -1,6 +1,6 @@
 name: sms_autofill
 description: Flutter plugin to provide SMS code autofill support
-version: 1.2.1
+version: 1.2.2
 author: jaumard<jimmy.aumard@gmail.com>
 homepage: https://github.com/jaumard/sms_autofill
 
@@ -8,7 +8,7 @@ environment:
   sdk: ">=2.0.0 <3.0.0"
 
 dependencies:
-  pin_input_text_field: ^3.0.1
+  pin_input_text_field: ^3.0.4
     #git:
     #  url: https://github.com/TinoGuo/pin_input_text_field
     #  ref: dev

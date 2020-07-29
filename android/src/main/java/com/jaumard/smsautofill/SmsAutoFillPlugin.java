@@ -11,8 +11,6 @@ import android.content.IntentSender;
 import android.os.Build;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.credentials.Credential;
 import com.google.android.gms.auth.api.credentials.HintRequest;
@@ -29,14 +27,13 @@ import java.lang.ref.WeakReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import androidx.annotation.NonNull;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
-
-import com.jaumard.smsautofill.AppSignatureHelper;
 
 /**
  * SmsAutoFillPlugin
@@ -113,12 +110,12 @@ public class SmsAutoFillPlugin implements MethodCallHandler {
                     }
                 });
                 break;
-            case "getPlatformVersion":
-                pendingHintResult = result;
-                requestHint();
-                break;
             case "unregisterListener":
-                activity.unregisterReceiver(broadcastReceiver);
+                try {
+                    activity.unregisterReceiver(broadcastReceiver);
+                } catch (Exception ex) {
+                    //avoid crash if unregister called multiple times
+                }
                 result.success("successfully unregister receiver");
                 break;
             case "getAppSignature":
@@ -171,8 +168,7 @@ public class SmsAutoFillPlugin implements MethodCallHandler {
                 if (extras != null) {
                     status = (Status) extras.get(SmsRetriever.EXTRA_STATUS);
                     if (status != null) {
-                        switch (status.getStatusCode()) {
-                            case CommonStatusCodes.SUCCESS:
+                        if (status.getStatusCode() == CommonStatusCodes.SUCCESS) {
                                 // Get SMS message contents
                                 String message = (String) extras.get(SmsRetriever.EXTRA_SMS_MESSAGE);
                                 Pattern pattern = Pattern.compile("\\d{4,6}");
@@ -184,12 +180,10 @@ public class SmsAutoFillPlugin implements MethodCallHandler {
                                     } else {
                                         plugin.get().setCode(message);
                                     }
-                                    return;
                                 }
                         }
                     }
                 }
-                plugin.get().setCode(null);
             }
         }
     }

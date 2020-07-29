@@ -47,17 +47,21 @@ class SmsAutoFill {
 class PinFieldAutoFill extends StatefulWidget {
   final int codeLength;
   final bool autofocus;
+  final TextEditingController controller;
   final String currentCode;
   final Function(String) onCodeSubmitted;
   final Function(String) onCodeChanged;
   final PinDecoration decoration;
   final FocusNode focusNode;
   final TextInputType keyboardType;
+  final TextInputAction textInputAction;
 
   const PinFieldAutoFill({
     Key key,
     this.keyboardType = const TextInputType.numberWithOptions(),
+    this.textInputAction = TextInputAction.done,
     this.focusNode,
+    this.controller,
     this.decoration = const UnderlineDecoration(textStyle: TextStyle(color: Colors.black)),
     this.onCodeSubmitted,
     this.onCodeChanged,
@@ -74,6 +78,7 @@ class PinFieldAutoFill extends StatefulWidget {
 
 class _PinFieldAutoFillState extends State<PinFieldAutoFill> with CodeAutoFill {
   TextEditingController controller;
+  bool _shouldDisposeController;
 
   @override
   Widget build(BuildContext context) {
@@ -84,13 +89,15 @@ class _PinFieldAutoFillState extends State<PinFieldAutoFill> with CodeAutoFill {
       keyboardType: widget.keyboardType,
       autoFocus: widget.autofocus,
       controller: controller,
+      textInputAction: widget.textInputAction,
       onSubmit: widget.onCodeSubmitted,
     );
   }
 
   @override
   void initState() {
-    controller = TextEditingController(text: '');
+    _shouldDisposeController = widget.controller == null;
+    controller = widget.controller ?? TextEditingController(text: '');
     code = widget.currentCode;
     codeUpdated();
     controller.addListener(() {
@@ -99,12 +106,17 @@ class _PinFieldAutoFillState extends State<PinFieldAutoFill> with CodeAutoFill {
         widget.onCodeChanged(code);
       }
     });
-    super.listenForCode();
+    listenForCode();
     super.initState();
   }
 
   @override
   void didUpdateWidget(PinFieldAutoFill oldWidget) {
+    if (widget.controller != controller) {
+      controller.dispose();
+      controller = widget.controller;
+    }
+
     if (widget.currentCode != oldWidget.currentCode || widget.currentCode != code) {
       code = widget.currentCode;
       codeUpdated();
@@ -123,7 +135,10 @@ class _PinFieldAutoFillState extends State<PinFieldAutoFill> with CodeAutoFill {
   @override
   void dispose() {
     cancel();
-    controller.dispose();
+    if (_shouldDisposeController) {
+      controller.dispose();
+    }
+    unregisterListener();
     super.dispose();
   }
 }
@@ -250,6 +265,10 @@ mixin CodeAutoFill {
     _subscription?.cancel();
   }
 
+  void unregisterListener() {
+    _autoFill.unregisterListener();
+  }
+
   void codeUpdated();
 }
 
@@ -305,6 +324,7 @@ class _TextFieldPinAutoFillState extends State<TextFieldPinAutoFill> with CodeAu
   void dispose() {
     cancel();
     _textController.dispose();
+    super.unregisterListener();
     super.dispose();
   }
 }

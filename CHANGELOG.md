@@ -1,3 +1,9 @@
+## 1.2.2
+
+* Add unregisterListener to mixin
+* Add TextEditingController to PinFieldAutoFill
+* down to support API 18 on Android
+
 ## 1.2.1
 
 * fix mixin usage
