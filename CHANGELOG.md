@@ -1,3 +1,7 @@
+## 1.2.3
+
+* Call onCodeChanged only when code have changed on PinFieldAutoFill
+
 ## 1.2.2
 
 * Add unregisterListener to mixin

@@ -56,6 +56,14 @@ class _HomePageState extends State<HomePage> {
                 decoration: UnderlineDecoration(
                     textStyle: TextStyle(fontSize: 20, color: Colors.black)),
                 currentCode: _code,
+                onCodeSubmitted: (code) {
+
+                },
+                onCodeChanged: (code) {
+                  if (code.length == 6) {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                  }
+                },
               ),
               Spacer(),
               TextFieldPinAutoFill(

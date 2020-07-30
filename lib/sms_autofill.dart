@@ -101,9 +101,11 @@ class _PinFieldAutoFillState extends State<PinFieldAutoFill> with CodeAutoFill {
     code = widget.currentCode;
     codeUpdated();
     controller.addListener(() {
-      code = controller.text;
-      if (widget.onCodeChanged != null) {
-        widget.onCodeChanged(code);
+      if (controller.text != code) {
+        code = controller.text;
+        if (widget.onCodeChanged != null) {
+          widget.onCodeChanged(code);
+        }
       }
     });
     listenForCode();
@@ -112,7 +114,7 @@ class _PinFieldAutoFillState extends State<PinFieldAutoFill> with CodeAutoFill {
 
   @override
   void didUpdateWidget(PinFieldAutoFill oldWidget) {
-    if (widget.controller != controller) {
+    if (widget.controller != null && widget.controller != controller) {
       controller.dispose();
       controller = widget.controller;
     }
@@ -126,9 +128,11 @@ class _PinFieldAutoFillState extends State<PinFieldAutoFill> with CodeAutoFill {
 
   @override
   void codeUpdated() {
-    controller.value = TextEditingValue(text: code ?? '');
-    if (widget.onCodeChanged != null) {
-      widget.onCodeChanged(code ?? '');
+    if (controller.text != code) {
+      controller.value = TextEditingValue(text: code ?? '');
+      if (widget.onCodeChanged != null) {
+        widget.onCodeChanged(code ?? '');
+      }
     }
   }
 
@@ -295,15 +299,17 @@ class _TextFieldPinAutoFillState extends State<TextFieldPinAutoFill> with CodeAu
   void initState() {
     code = widget.currentCode;
     codeUpdated();
-    super.listenForCode();
+    listenForCode();
     super.initState();
   }
 
   @override
   void codeUpdated() {
-    _textController.value = TextEditingValue(text: code ?? '');
-    if (widget.onCodeChanged != null) {
-      widget.onCodeChanged(code ?? '');
+    if (_textController.text != code) {
+      _textController.value = TextEditingValue(text: code ?? '');
+      if (widget.onCodeChanged != null) {
+        widget.onCodeChanged(code ?? '');
+      }
     }
   }
 
