@@ -261,12 +261,12 @@ mixin CodeAutoFill {
     _autoFill.listenForCode;
   }
 
-  void cancel() {
-    _subscription?.cancel();
+  Future<void> cancel() {
+    return _subscription?.cancel();
   }
 
-  void unregisterListener() {
-    _autoFill.unregisterListener();
+  Future<void> unregisterListener() {
+    return _autoFill.unregisterListener();
   }
 
   void codeUpdated();
@@ -324,7 +324,7 @@ class _TextFieldPinAutoFillState extends State<TextFieldPinAutoFill> with CodeAu
   void dispose() {
     cancel();
     _textController.dispose();
-    super.unregisterListener();
+    unregisterListener();
     super.dispose();
   }
 }
