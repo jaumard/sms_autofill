@@ -1,3 +1,7 @@
+## 1.2.4
+
+* update pin_input_text_field to support paste
+
 ## 1.2.3
 
 * Call onCodeChanged only when code have changed on PinFieldAutoFill

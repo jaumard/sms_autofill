@@ -1,5 +1,6 @@
 package com.jaumard.smsautofill;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.pm.PackageManager;
@@ -54,7 +55,7 @@ public class AppSignatureHelper extends ContextWrapper {
             // Get all package signatures for the current package
             String packageName = getPackageName();
             PackageManager packageManager = getPackageManager();
-            Signature[] signatures = packageManager.getPackageInfo(packageName,
+            @SuppressLint("PackageManagerGetSignatures") Signature[] signatures = packageManager.getPackageInfo(packageName,
                     PackageManager.GET_SIGNATURES).signatures;
 
             // For each signature create a compatible hash
