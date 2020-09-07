@@ -62,7 +62,7 @@ class PinFieldAutoFill extends StatefulWidget {
     this.textInputAction = TextInputAction.done,
     this.focusNode,
     this.controller,
-    this.decoration = const UnderlineDecoration(textStyle: TextStyle(color: Colors.black)),
+    this.decoration = const UnderlineDecoration(colorBuilder: FixedColorBuilder(Colors.black), textStyle: TextStyle(color: Colors.black)),
     this.onCodeSubmitted,
     this.onCodeChanged,
     this.currentCode,

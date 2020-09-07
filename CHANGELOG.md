@@ -1,3 +1,7 @@
+## 1.2.5
+
+* bump deps
+
 ## 1.2.4
 
 * update pin_input_text_field to support paste
