@@ -1,3 +1,8 @@
+## 1.2.6
+
+* fix deprecation warning
+* bump deps
+
 ## 1.2.5
 
 * bump deps
