@@ -54,11 +54,11 @@ class _HomePageState extends State<HomePage> {
               Spacer(),
               PinFieldAutoFill(
                 decoration: UnderlineDecoration(
-                    textStyle: TextStyle(fontSize: 20, color: Colors.black)),
+                  textStyle: TextStyle(fontSize: 20, color: Colors.black),
+                  colorBuilder: FixedColorBuilder(Colors.black.withOpacity(0.3)),
+                ),
                 currentCode: _code,
-                onCodeSubmitted: (code) {
-
-                },
+                onCodeSubmitted: (code) {},
                 onCodeChanged: (code) {
                   if (code.length == 6) {
                     FocusScope.of(context).requestFocus(FocusNode());
@@ -84,33 +84,21 @@ class _HomePageState extends State<HomePage> {
                   });
                 },
               ),
-              SizedBox(
-                height: 8.0
-              ),
-              Divider(
-                height: 1.0
-              ),
-              SizedBox(
-                height: 4.0
-              ),
+              SizedBox(height: 8.0),
+              Divider(height: 1.0),
+              SizedBox(height: 4.0),
               Text("App Signature : $signature"),
-              SizedBox(
-                height: 4.0
-              ),
+              SizedBox(height: 4.0),
               RaisedButton(
                 child: Text('Get app signature'),
                 onPressed: () async {
                   signature = await SmsAutoFill().getAppSignature;
-                  setState((){});
+                  setState(() {});
                 },
               ),
               RaisedButton(
                 onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => CodeAutoFillTestPage()
-                    )
-                  );
+                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => CodeAutoFillTestPage()));
                 },
                 child: Text("Test CodeAutoFill mixin"),
               )
@@ -127,9 +115,7 @@ class CodeAutoFillTestPage extends StatefulWidget {
   _CodeAutoFillTestPageState createState() => _CodeAutoFillTestPageState();
 }
 
-class _CodeAutoFillTestPageState extends State<CodeAutoFillTestPage>
-  with CodeAutoFill {
-
+class _CodeAutoFillTestPageState extends State<CodeAutoFillTestPage> with CodeAutoFill {
   String appSignature;
   String otpCode;
 
@@ -171,7 +157,9 @@ class _CodeAutoFillTestPageState extends State<CodeAutoFillTestPage>
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.fromLTRB(32, 32, 32, 0),
-            child: Text("This is the current app signature: $appSignature",),
+            child: Text(
+              "This is the current app signature: $appSignature",
+            ),
           ),
           const Spacer(),
           Padding(
