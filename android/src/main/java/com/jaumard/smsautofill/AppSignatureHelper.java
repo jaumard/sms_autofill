@@ -5,10 +5,12 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.os.Build;
 import android.util.Base64;
 import android.util.Log;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -48,6 +50,7 @@ public class AppSignatureHelper extends ContextWrapper {
      *
      * @return
      */
+    @SuppressLint("PackageManagerGetSignatures")
     public ArrayList<String> getAppSignatures() {
         ArrayList<String> appCodes = new ArrayList<>();
 
@@ -55,8 +58,14 @@ public class AppSignatureHelper extends ContextWrapper {
             // Get all package signatures for the current package
             String packageName = getPackageName();
             PackageManager packageManager = getPackageManager();
-            @SuppressLint("PackageManagerGetSignatures") Signature[] signatures = packageManager.getPackageInfo(packageName,
-                    PackageManager.GET_SIGNATURES).signatures;
+            Signature[] signatures;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+                signatures = packageManager.getPackageInfo(packageName,
+                        PackageManager.GET_SIGNING_CERTIFICATES).signingInfo.getApkContentsSigners();
+            } else {
+                signatures = packageManager.getPackageInfo(packageName,
+                        PackageManager.GET_SIGNATURES).signatures;
+            }
 
             // For each signature create a compatible hash
             for (Signature signature : signatures) {
@@ -75,7 +84,11 @@ public class AppSignatureHelper extends ContextWrapper {
         String appInfo = packageName + " " + signature;
         try {
             MessageDigest messageDigest = MessageDigest.getInstance(HASH_TYPE);
-            messageDigest.update(appInfo.getBytes(Charset.forName("UTF-8")));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                messageDigest.update(appInfo.getBytes(StandardCharsets.UTF_8));
+            } else {
+                messageDigest.update(appInfo.getBytes(Charset.forName("UTF-8")));
+            }
             byte[] hashSignature = messageDigest.digest();
 
             // truncated into NUM_HASHED_BYTES
