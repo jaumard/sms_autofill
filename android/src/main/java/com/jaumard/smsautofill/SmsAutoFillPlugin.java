@@ -62,6 +62,8 @@ public class SmsAutoFillPlugin implements MethodCallHandler {
                         Credential credential = data.getParcelableExtra(Credential.EXTRA_KEY);
                         final String phoneNumber = credential.getId();
                         pendingHintResult.success(phoneNumber);
+                    } else {
+                        pendingHintResult.success(null);
                     }
                     return true;
                 }
