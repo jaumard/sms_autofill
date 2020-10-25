@@ -62,7 +62,8 @@ class PinFieldAutoFill extends StatefulWidget {
     this.textInputAction = TextInputAction.done,
     this.focusNode,
     this.controller,
-    this.decoration = const UnderlineDecoration(colorBuilder: FixedColorBuilder(Colors.black), textStyle: TextStyle(color: Colors.black)),
+    this.decoration = const UnderlineDecoration(
+        colorBuilder: FixedColorBuilder(Colors.black), textStyle: TextStyle(color: Colors.black)),
     this.onCodeSubmitted,
     this.onCodeChanged,
     this.currentCode,
@@ -182,7 +183,7 @@ class _PhoneFieldHintState extends State<PhoneFieldHint> {
     _controller = widget.controller ?? widget.child?.controller ?? TextEditingController(text: '');
     _focusNode = widget.focusNode ?? widget.child?.focusNode ?? FocusNode();
     _focusNode.addListener(() async {
-      if (_focusNode.hasFocus && !_hintShown) {
+      if (_focusNode.hasFocus && _hintShown == false) {
         _hintShown = true;
         scheduleMicrotask(() {
           _askPhoneHint();
@@ -203,6 +204,8 @@ class _PhoneFieldHintState extends State<PhoneFieldHint> {
                 ? IconButton(
                     icon: Icon(Icons.phonelink_setup),
                     onPressed: () async {
+                      _focusNode.requestFocus();
+                      _hintShown = true;
                       await _askPhoneHint();
                     },
                   )
