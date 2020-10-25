@@ -57,8 +57,8 @@ public class SmsAutoFillPlugin implements MethodCallHandler {
 
             @Override
             public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
-                if (requestCode == PHONE_HINT_REQUEST) {
-                    if (resultCode == Activity.RESULT_OK) {
+                if (requestCode == PHONE_HINT_REQUEST && pendingHintResult != null) {
+                    if (resultCode == Activity.RESULT_OK && data != null) {
                         Credential credential = data.getParcelableExtra(Credential.EXTRA_KEY);
                         final String phoneNumber = credential.getId();
                         pendingHintResult.success(phoneNumber);
