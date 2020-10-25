@@ -28,6 +28,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import androidx.annotation.NonNull;
+
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
@@ -56,13 +57,11 @@ public class SmsAutoFillPlugin implements MethodCallHandler {
 
             @Override
             public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
-                if (requestCode == PHONE_HINT_REQUEST && pendingHintResult != null) {
-                    if (resultCode == Activity.RESULT_OK && data != null) {
+                if (requestCode == PHONE_HINT_REQUEST) {
+                    if (resultCode == Activity.RESULT_OK) {
                         Credential credential = data.getParcelableExtra(Credential.EXTRA_KEY);
                         final String phoneNumber = credential.getId();
                         pendingHintResult.success(phoneNumber);
-                    } else {
-                        pendingHintResult.success(null);
                     }
                     return true;
                 }
@@ -169,18 +168,18 @@ public class SmsAutoFillPlugin implements MethodCallHandler {
                     status = (Status) extras.get(SmsRetriever.EXTRA_STATUS);
                     if (status != null) {
                         if (status.getStatusCode() == CommonStatusCodes.SUCCESS) {
-                                // Get SMS message contents
-                                String message = (String) extras.get(SmsRetriever.EXTRA_SMS_MESSAGE);
-                                Pattern pattern = Pattern.compile("\\d{4,6}");
-                                if (message != null) {
-                                    Matcher matcher = pattern.matcher(message);
+                            // Get SMS message contents
+                            String message = (String) extras.get(SmsRetriever.EXTRA_SMS_MESSAGE);
+                            Pattern pattern = Pattern.compile("\\d{4,6}");
+                            if (message != null) {
+                                Matcher matcher = pattern.matcher(message);
 
-                                    if (matcher.find()) {
-                                        plugin.get().setCode(matcher.group(0));
-                                    } else {
-                                        plugin.get().setCode(message);
-                                    }
+                                if (matcher.find()) {
+                                    plugin.get().setCode(matcher.group(0));
+                                } else {
+                                    plugin.get().setCode(message);
                                 }
+                            }
                         }
                     }
                 }
