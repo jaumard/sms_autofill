@@ -204,7 +204,6 @@ class _PhoneFieldHintState extends State<PhoneFieldHint> {
                 ? IconButton(
                     icon: Icon(Icons.phonelink_setup),
                     onPressed: () async {
-                      _focusNode.requestFocus();
                       _hintShown = true;
                       await _askPhoneHint();
                     },
