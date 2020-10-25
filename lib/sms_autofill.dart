@@ -183,7 +183,7 @@ class _PhoneFieldHintState extends State<PhoneFieldHint> {
     _controller = widget.controller ?? widget.child?.controller ?? TextEditingController(text: '');
     _focusNode = widget.focusNode ?? widget.child?.focusNode ?? FocusNode();
     _focusNode.addListener(() async {
-      if (_focusNode.hasFocus && _hintShown == false) {
+      if (_focusNode.hasFocus && !_hintShown) {
         _hintShown = true;
         scheduleMicrotask(() {
           _askPhoneHint();
