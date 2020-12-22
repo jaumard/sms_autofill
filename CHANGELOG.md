@@ -1,3 +1,8 @@
+## 1.2.7
+
+* add iOS autofill
+* bump deps
+
 ## 1.2.6
 
 * fix deprecation warning
