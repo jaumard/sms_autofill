@@ -159,12 +159,14 @@ class PhoneFieldHint extends StatefulWidget {
   final TextEditingController controller;
   final List<TextInputFormatter> inputFormatters;
   final TextField child;
+  final bool showIcon;
 
   const PhoneFieldHint({
     Key key,
     this.child,
     this.controller,
     this.inputFormatters,
+    this.showIcon,
     this.autofocus = false,
     this.focusNode,
   }) : super(key: key);
@@ -209,7 +211,7 @@ class _PhoneFieldHintState extends State<PhoneFieldHint> {
           autofillHints: [AutofillHints.telephoneNumber],
           inputFormatters: _inputFormatters,
           decoration: InputDecoration(
-            suffixIcon: Platform.isAndroid
+            suffixIcon: Platform.isAndroid && widget.showIcon
                 ? IconButton(
                     icon: Icon(Icons.phonelink_setup),
                     onPressed: () async {
