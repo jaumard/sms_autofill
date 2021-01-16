@@ -178,11 +178,13 @@ class _PhoneFieldHintState extends State<PhoneFieldHint> {
   TextEditingController _controller;
   FocusNode _focusNode;
   bool _hintShown = false;
+  bool _isUsingInternalController = false;
+  bool _isUsingInternalFocusNode = false;
 
   @override
   void initState() {
-    _controller = widget.controller ?? widget.child?.controller ?? TextEditingController(text: '');
-    _focusNode = widget.focusNode ?? widget.child?.focusNode ?? FocusNode();
+    _controller = widget.controller ?? widget.child?.controller ?? _createInternalController();
+    _focusNode = widget.focusNode ?? widget.child?.focusNode ?? _createInternalFocusNode();
     _focusNode.addListener(() async {
       if (_focusNode.hasFocus && !_hintShown) {
         _hintShown = true;
@@ -218,14 +220,29 @@ class _PhoneFieldHintState extends State<PhoneFieldHint> {
 
   @override
   void dispose() {
-    _controller.dispose();
-    _focusNode.dispose();
+    if(_isUsingInternalController) {
+      _controller.dispose();
+    }
+
+    if(_isUsingInternalFocusNode) {
+      _focusNode.dispose();
+    }
     super.dispose();
   }
 
   Future<void> _askPhoneHint() async {
     String hint = await _autoFill.hint;
     _controller.value = TextEditingValue(text: hint ?? '');
+  }
+
+  TextEditingController _createInternalController() {
+    _isUsingInternalController = true;
+    return TextEditingController(text: '');
+  }
+
+  FocusNode _createInternalFocusNode() {
+    _isUsingInternalFocusNode = true;
+    return FocusNode();
   }
 }
 
