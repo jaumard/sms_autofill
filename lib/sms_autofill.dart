@@ -187,7 +187,7 @@ class _PhoneFieldHintState extends State<PhoneFieldHint> {
   @override
   void initState() {
     _controller = widget.controller ?? widget.child?.controller ?? _createInternalController();
-    _inputFormatters = widget.inputFormatters ?? widget.child?.controller ?? [];
+    _inputFormatters = widget.inputFormatters ?? widget.child?.inputFormatters ?? [];
     _focusNode = widget.focusNode ?? widget.child?.focusNode ?? _createInternalFocusNode();
     _focusNode.addListener(() async {
       if (_focusNode.hasFocus && !_hintShown) {
