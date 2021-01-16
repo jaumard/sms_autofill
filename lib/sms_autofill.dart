@@ -206,6 +206,7 @@ class _PhoneFieldHintState extends State<PhoneFieldHint> {
         TextField(
           autofocus: widget.autofocus,
           focusNode: _focusNode,
+          autofillHints: [AutofillHints.telephoneNumber],
           inputFormatters: _inputFormatters,
           decoration: InputDecoration(
             suffixIcon: Platform.isAndroid
