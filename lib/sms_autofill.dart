@@ -157,12 +157,14 @@ class PhoneFieldHint extends StatefulWidget {
   final bool autofocus;
   final FocusNode focusNode;
   final TextEditingController controller;
+  final List<TextInputFormatter> inputFormatters;
   final TextField child;
 
   const PhoneFieldHint({
     Key key,
     this.child,
     this.controller,
+    this.inputFormatters,
     this.autofocus = false,
     this.focusNode,
   }) : super(key: key);
@@ -176,6 +178,7 @@ class PhoneFieldHint extends StatefulWidget {
 class _PhoneFieldHintState extends State<PhoneFieldHint> {
   final SmsAutoFill _autoFill = SmsAutoFill();
   TextEditingController _controller;
+  List<TextInputFormatter> _inputFormatters;
   FocusNode _focusNode;
   bool _hintShown = false;
   bool _isUsingInternalController = false;
@@ -184,6 +187,7 @@ class _PhoneFieldHintState extends State<PhoneFieldHint> {
   @override
   void initState() {
     _controller = widget.controller ?? widget.child?.controller ?? _createInternalController();
+    _inputFormatters = widget.inputFormatters ?? widget.child?.controller ?? [];
     _focusNode = widget.focusNode ?? widget.child?.focusNode ?? _createInternalFocusNode();
     _focusNode.addListener(() async {
       if (_focusNode.hasFocus && !_hintShown) {
@@ -202,6 +206,7 @@ class _PhoneFieldHintState extends State<PhoneFieldHint> {
         TextField(
           autofocus: widget.autofocus,
           focusNode: _focusNode,
+          inputFormatters: _inputFormatters,
           decoration: InputDecoration(
             suffixIcon: Platform.isAndroid
                 ? IconButton(
