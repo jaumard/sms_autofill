@@ -158,15 +158,15 @@ class PhoneFieldHint extends StatefulWidget {
   final FocusNode focusNode;
   final TextEditingController controller;
   final List<TextInputFormatter> inputFormatters;
+  final InputDecoration decoration;
   final TextField child;
-  final bool showIcon;
 
   const PhoneFieldHint({
     Key key,
     this.child,
     this.controller,
     this.inputFormatters,
-    this.showIcon,
+    this.decoration,
     this.autofocus = false,
     this.focusNode,
   }) : super(key: key);
@@ -186,6 +186,8 @@ class _PhoneFieldHintState extends State<PhoneFieldHint> {
   bool _isUsingInternalController = false;
   bool _isUsingInternalFocusNode = false;
 
+  InputDecoration _decoration;
+
   @override
   void initState() {
     _controller = widget.controller ?? widget.child?.controller ?? _createInternalController();
@@ -199,6 +201,16 @@ class _PhoneFieldHintState extends State<PhoneFieldHint> {
         });
       }
     });
+    _decoration = widget.decoration ?? InputDecoration(
+      suffixIcon: Platform.isAndroid
+          ? IconButton(
+        icon: Icon(Icons.phonelink_setup),
+        onPressed: () async {
+          _hintShown = true;
+          await _askPhoneHint();
+        },
+      ) : null,
+    );
     super.initState();
   }
 
@@ -210,17 +222,7 @@ class _PhoneFieldHintState extends State<PhoneFieldHint> {
           focusNode: _focusNode,
           autofillHints: [AutofillHints.telephoneNumber],
           inputFormatters: _inputFormatters,
-          decoration: InputDecoration(
-            suffixIcon: Platform.isAndroid && widget.showIcon
-                ? IconButton(
-                    icon: Icon(Icons.phonelink_setup),
-                    onPressed: () async {
-                      _hintShown = true;
-                      await _askPhoneHint();
-                    },
-                  )
-                : null,
-          ),
+          decoration: _decoration,
           controller: _controller,
           keyboardType: TextInputType.phone,
         );
