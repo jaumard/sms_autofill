@@ -153,7 +153,70 @@ class _PinFieldAutoFillState extends State<PinFieldAutoFill> with CodeAutoFill {
   }
 }
 
-class PhoneFieldHint extends StatefulWidget {
+class PhoneFormFieldHint extends StatelessWidget {
+  final bool autofocus;
+  final FocusNode focusNode;
+  final TextEditingController controller;
+  final List<TextInputFormatter> inputFormatters;
+  final FormFieldValidator validator;
+  final InputDecoration decoration;
+  final TextField child;
+
+  const PhoneFormFieldHint({
+    Key key,
+    this.child,
+    this.controller,
+    this.inputFormatters,
+    this.validator,
+    this.decoration,
+    this.autofocus = false,
+    this.focusNode,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return _PhoneFieldHint(key: key,
+        child: child,
+        inputFormatters: inputFormatters,
+        validator: validator,
+        decoration: decoration,
+        autofocus: autofocus,
+        focusNode: focusNode,
+        isFormWidget: true);
+  }
+}
+
+class PhoneFieldHint extends StatelessWidget {
+  final bool autofocus;
+  final FocusNode focusNode;
+  final TextEditingController controller;
+  final List<TextInputFormatter> inputFormatters;
+  final InputDecoration decoration;
+  final TextField child;
+
+  const PhoneFieldHint({
+    Key key,
+    this.child,
+    this.controller,
+    this.inputFormatters,
+    this.decoration,
+    this.autofocus = false,
+    this.focusNode,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return _PhoneFieldHint(key: key,
+        child: child,
+        inputFormatters: inputFormatters,
+        decoration: decoration,
+        autofocus: autofocus,
+        focusNode: focusNode,
+        isFormWidget: false);
+  }
+}
+
+class _PhoneFieldHint extends StatefulWidget {
   final bool autofocus;
   final FocusNode focusNode;
   final TextEditingController controller;
@@ -163,7 +226,7 @@ class PhoneFieldHint extends StatefulWidget {
   final InputDecoration decoration;
   final TextField child;
 
-  const PhoneFieldHint({
+  const _PhoneFieldHint({
     Key key,
     this.child,
     this.controller,
@@ -181,7 +244,7 @@ class PhoneFieldHint extends StatefulWidget {
   }
 }
 
-class _PhoneFieldHintState extends State<PhoneFieldHint> {
+class _PhoneFieldHintState extends State<_PhoneFieldHint> {
   final SmsAutoFill _autoFill = SmsAutoFill();
   TextEditingController _controller;
   List<TextInputFormatter> _inputFormatters;
