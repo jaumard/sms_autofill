@@ -169,7 +169,7 @@ class PhoneFieldHint extends StatefulWidget {
     this.controller,
     this.inputFormatters,
     this.validator,
-    this.isFormWidget,
+    this.isFormWidget = false,
     this.decoration,
     this.autofocus = false,
     this.focusNode,
