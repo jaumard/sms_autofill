@@ -186,8 +186,6 @@ class _PhoneFieldHintState extends State<PhoneFieldHint> {
   bool _isUsingInternalController = false;
   bool _isUsingInternalFocusNode = false;
 
-  InputDecoration _decoration;
-
   @override
   void initState() {
     _controller = widget.controller ?? widget.child?.controller ?? _createInternalController();
@@ -201,7 +199,14 @@ class _PhoneFieldHintState extends State<PhoneFieldHint> {
         });
       }
     });
-    _decoration = widget.decoration ?? InputDecoration(
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    final decoration = widget.decoration ?? InputDecoration(
       suffixIcon: Platform.isAndroid
           ? IconButton(
         icon: Icon(Icons.phonelink_setup),
@@ -211,18 +216,14 @@ class _PhoneFieldHintState extends State<PhoneFieldHint> {
         },
       ) : null,
     );
-    super.initState();
-  }
 
-  @override
-  Widget build(BuildContext context) {
     return widget.child ??
         TextField(
           autofocus: widget.autofocus,
           focusNode: _focusNode,
           autofillHints: [AutofillHints.telephoneNumber],
           inputFormatters: _inputFormatters,
-          decoration: _decoration,
+          decoration: decoration,
           controller: _controller,
           keyboardType: TextInputType.phone,
         );
