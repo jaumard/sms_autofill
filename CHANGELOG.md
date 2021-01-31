@@ -1,3 +1,10 @@
+## 1.3.0
+
+* add PhoneFormFieldHint
+* Manage `validation` field
+* Allow custom decoration to phone fields
+* Allow to hide icon on phone fields
+
 ## 1.2.7
 
 * add iOS autofill
