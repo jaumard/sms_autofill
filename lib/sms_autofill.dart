@@ -158,6 +158,8 @@ class PhoneFieldHint extends StatefulWidget {
   final FocusNode focusNode;
   final TextEditingController controller;
   final List<TextInputFormatter> inputFormatters;
+  final FormFieldValidator validator;
+  final bool isFormWidget;
   final InputDecoration decoration;
   final TextField child;
 
@@ -166,6 +168,8 @@ class PhoneFieldHint extends StatefulWidget {
     this.child,
     this.controller,
     this.inputFormatters,
+    this.validator,
+    this.isFormWidget,
     this.decoration,
     this.autofocus = false,
     this.focusNode,
@@ -217,16 +221,7 @@ class _PhoneFieldHintState extends State<PhoneFieldHint> {
       ) : null,
     );
 
-    return widget.child ??
-        TextField(
-          autofocus: widget.autofocus,
-          focusNode: _focusNode,
-          autofillHints: [AutofillHints.telephoneNumber],
-          inputFormatters: _inputFormatters,
-          decoration: decoration,
-          controller: _controller,
-          keyboardType: TextInputType.phone,
-        );
+    return widget.child ?? _createField(widget.isFormWidget, decoration, widget.validator);
   }
 
   @override
@@ -239,6 +234,37 @@ class _PhoneFieldHintState extends State<PhoneFieldHint> {
       _focusNode.dispose();
     }
     super.dispose();
+  }
+
+  Widget _createField(bool isFormWidget, InputDecoration decoration, FormFieldValidator validator) {
+    return isFormWidget
+        ? _createTextFormField(decoration, validator)
+        : _createTextField(decoration);
+  }
+
+  Widget _createTextField(InputDecoration decoration) {
+    return TextField(
+      autofocus: widget.autofocus,
+      focusNode: _focusNode,
+      autofillHints: [AutofillHints.telephoneNumber],
+      inputFormatters: _inputFormatters,
+      decoration: decoration,
+      controller: _controller,
+      keyboardType: TextInputType.phone,
+    );
+  }
+
+  Widget _createTextFormField(InputDecoration decoration, FormFieldValidator validator) {
+    return TextFormField(
+      validator: validator,
+      autofocus: widget.autofocus,
+      focusNode: _focusNode,
+      autofillHints: [AutofillHints.telephoneNumber],
+      inputFormatters: _inputFormatters,
+      decoration: decoration,
+      controller: _controller,
+      keyboardType: TextInputType.phone,
+    );
   }
 
   Future<void> _askPhoneHint() async {
