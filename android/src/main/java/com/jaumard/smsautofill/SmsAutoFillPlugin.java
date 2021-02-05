@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.content.IntentSender;
 import android.os.Build;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.credentials.Credential;
@@ -132,6 +133,14 @@ public class SmsAutoFillPlugin implements MethodCallHandler {
 
     @TargetApi(Build.VERSION_CODES.ECLAIR)
     private void requestHint() {
+
+        if(!isSimSupport()) {
+            if(pendingHintResult != null) {
+                pendingHintResult.success(null);
+            }
+            return;
+        }
+
         HintRequest hintRequest = new HintRequest.Builder()
                 .setPhoneNumberIdentifierSupported(true)
                 .build();
@@ -146,6 +155,13 @@ public class SmsAutoFillPlugin implements MethodCallHandler {
         } catch (IntentSender.SendIntentException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean isSimSupport()
+    {
+        TelephonyManager telephonyManager = (TelephonyManager) activity.getSystemService(Context.TELEPHONY_SERVICE);
+        return !(telephonyManager.getSimState() == TelephonyManager.SIM_STATE_ABSENT);
+
     }
 
     private static class SmsBroadcastReceiver extends BroadcastReceiver {
