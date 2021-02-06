@@ -1,3 +1,8 @@
+## 1.3.1
+
+* fix bug on PhoneFormFieldHint when controller is used
+* Check if SIM is present or not
+
 ## 1.3.0
 
 * add PhoneFormFieldHint
