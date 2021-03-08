@@ -39,7 +39,6 @@ class _HomePageState extends State<HomePage> {
     return MaterialApp(
       theme: ThemeData.light(),
       home: Scaffold(
-        resizeToAvoidBottomPadding: false,
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
