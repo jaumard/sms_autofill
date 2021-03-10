@@ -20,7 +20,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String _code;
+  String _code="";
   String signature = "{{ app signature }}";
 
   @override
@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
                 currentCode: _code,
                 onCodeSubmitted: (code) {},
                 onCodeChanged: (code) {
-                  if (code.length == 6) {
+                  if (code!.length == 6) {
                     FocusScope.of(context).requestFocus(FocusNode());
                   }
                 },
@@ -69,13 +69,13 @@ class _HomePageState extends State<HomePage> {
                 currentCode: _code,
               ),
               Spacer(),
-              RaisedButton(
+              ElevatedButton(
                 child: Text('Listen for sms code'),
                 onPressed: () async {
                   await SmsAutoFill().listenForCode;
                 },
               ),
-              RaisedButton(
+              ElevatedButton(
                 child: Text('Set code to 123456'),
                 onPressed: () async {
                   setState(() {
@@ -88,14 +88,14 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: 4.0),
               Text("App Signature : $signature"),
               SizedBox(height: 4.0),
-              RaisedButton(
+              ElevatedButton(
                 child: Text('Get app signature'),
                 onPressed: () async {
                   signature = await SmsAutoFill().getAppSignature;
                   setState(() {});
                 },
               ),
-              RaisedButton(
+              ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(builder: (_) => CodeAutoFillTestPage()));
                 },
@@ -115,13 +115,13 @@ class CodeAutoFillTestPage extends StatefulWidget {
 }
 
 class _CodeAutoFillTestPageState extends State<CodeAutoFillTestPage> with CodeAutoFill {
-  String appSignature;
-  String otpCode;
+  String? appSignature;
+  String? otpCode;
 
   @override
   void codeUpdated() {
     setState(() {
-      otpCode = code;
+      otpCode = code!;
     });
   }
 
