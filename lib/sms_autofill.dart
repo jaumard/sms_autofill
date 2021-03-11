@@ -381,7 +381,7 @@ class TextFieldPinAutoFill extends StatefulWidget {
 mixin CodeAutoFill {
   final SmsAutoFill _autoFill = SmsAutoFill();
   String? code;
-  late StreamSubscription? _subscription;
+  StreamSubscription? _subscription;
 
   void listenForCode() {
     _subscription = _autoFill.code.listen((code) {
@@ -391,8 +391,8 @@ mixin CodeAutoFill {
     _autoFill.listenForCode;
   }
 
-  Future<void> cancel() {
-    return _subscription!.cancel();
+  Future<void> cancel() async {
+    return _subscription?.cancel();
   }
 
   Future<void> unregisterListener() {
