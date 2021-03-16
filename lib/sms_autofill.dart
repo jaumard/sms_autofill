@@ -8,11 +8,12 @@ import 'package:pin_input_text_field/pin_input_text_field.dart';
 export 'package:pin_input_text_field/pin_input_text_field.dart';
 
 class SmsAutoFill {
-  static SmsAutoFill? _singleton;
+
+  static final SmsAutoFill _singleton = SmsAutoFill._();
   static const MethodChannel _channel = const MethodChannel('sms_autofill');
   final StreamController<String> _code = StreamController.broadcast();
 
-  factory SmsAutoFill() => _singleton ??= SmsAutoFill._();
+  factory SmsAutoFill() => _singleton;
 
   SmsAutoFill._() {
     _channel.setMethodCallHandler(_didReceive);
@@ -110,9 +111,7 @@ class _PinFieldAutoFillState extends State<PinFieldAutoFill> with CodeAutoFill {
     controller.addListener(() {
       if (controller.text != code) {
         code = controller.text;
-        if (widget.onCodeChanged != null) {
-          widget.onCodeChanged!(code);
-        }
+        widget.onCodeChanged?.call(code);
       }
     });
     listenForCode();
@@ -137,9 +136,7 @@ class _PinFieldAutoFillState extends State<PinFieldAutoFill> with CodeAutoFill {
   void codeUpdated() {
     if (controller.text != code) {
       controller.value = TextEditingValue(text: code ?? '');
-      if (widget.onCodeChanged != null) {
-        widget.onCodeChanged!(code ?? '');
-      }
+      widget.onCodeChanged?.call(code ?? '');
     }
   }
 
@@ -434,9 +431,7 @@ class _TextFieldPinAutoFillState extends State<TextFieldPinAutoFill> with CodeAu
   void codeUpdated() {
     if (_textController.text != code) {
       _textController.value = TextEditingValue(text: code ?? '');
-      if (widget.onCodeChanged != null) {
-        widget.onCodeChanged!(code ?? '');
-      }
+      widget.onCodeChanged?.call(code ?? '');
     }
   }
 
