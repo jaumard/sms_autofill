@@ -26,8 +26,8 @@ class SmsAutoFill {
 
   Stream<String> get code => _code.stream;
 
-  Future<String> get hint async {
-    final String version = await _channel.invokeMethod('requestPhoneHint');
+  Future<String?> get hint async {
+    final String? version = await _channel.invokeMethod('requestPhoneHint');
     return version;
   }
 
