@@ -334,7 +334,7 @@ class _PhoneFieldHintState extends State<_PhoneFieldHint> {
 
   Future<void> _askPhoneHint() async {
     String? hint = await _autoFill.hint;
-    _controller.value = TextEditingValue(text: hint);
+    _controller.value = TextEditingValue(text: hint ?? '');
   }
 
   TextEditingController _createInternalController() {
