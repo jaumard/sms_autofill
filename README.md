@@ -46,13 +46,12 @@ TextFieldPinAutoFill(
 ### Android SMS constraint
 For the code to be receive, it need to follow some rules as describe here: https://developers.google.com/identity/sms-retriever/verify
 - Be no longer than 140 bytes
-- Begin with the prefix <#>
 - Contain a one-time code that the client sends back to your server to complete the verification flow
 - End with an 11-character hash string that identifies your app
 
 One example of SMS would be: 
 ```
-<#> ExampleApp: Your code is 123456
+ExampleApp: Your code is 123456
 FA+9qCX9VSu
 ``` 
 
