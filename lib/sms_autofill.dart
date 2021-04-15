@@ -28,8 +28,8 @@ class SmsAutoFill {
   Stream<String> get code => _code.stream;
 
   Future<String> get hint async {
-    final String version = await _channel.invokeMethod('requestPhoneHint');
-    return version;
+    final String? version = await _channel.invokeMethod('requestPhoneHint');
+    return version ?? '';
   }
 
   Future<void> get listenForCode async {
@@ -41,8 +41,8 @@ class SmsAutoFill {
   }
 
   Future<String> get getAppSignature async {
-    final String appSignature = await _channel.invokeMethod('getAppSignature');
-    return appSignature;
+    final String? appSignature = await _channel.invokeMethod('getAppSignature');
+    return appSignature ?? '';
   }
 }
 
@@ -330,7 +330,7 @@ class _PhoneFieldHintState extends State<_PhoneFieldHint> {
   }
 
   Future<void> _askPhoneHint() async {
-    String? hint = await _autoFill.hint;
+    final hint = await _autoFill.hint;
     _controller.value = TextEditingValue(text: hint);
   }
 
