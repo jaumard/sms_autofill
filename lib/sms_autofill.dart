@@ -211,6 +211,7 @@ class PhoneFieldHint extends StatelessWidget {
     return _PhoneFieldHint(key: key,
         child: child,
         inputFormatters: inputFormatters,
+        controller: controller,
         decoration: decoration,
         autoFocus: autoFocus,
         focusNode: focusNode,
