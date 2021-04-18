@@ -54,6 +54,7 @@ class PinFieldAutoFill extends StatefulWidget {
   final Function(String?)? onCodeChanged;
   final PinDecoration decoration;
   final FocusNode? focusNode;
+  final Cursor? cursor;
   final TextInputType keyboardType;
   final TextInputAction textInputAction;
 
@@ -62,6 +63,7 @@ class PinFieldAutoFill extends StatefulWidget {
     this.keyboardType = const TextInputType.numberWithOptions(),
     this.textInputAction = TextInputAction.done,
     this.focusNode,
+    this.cursor,
     this.controller,
     this.decoration = const UnderlineDecoration(
         colorBuilder: FixedColorBuilder(Colors.black), textStyle: TextStyle(color: Colors.black)),
@@ -90,6 +92,7 @@ class _PinFieldAutoFillState extends State<PinFieldAutoFill> with CodeAutoFill {
       focusNode: widget.focusNode,
       enableInteractiveSelection: true,
       autocorrect: false,
+      cursor: widget.cursor,
       autofillHints: const <String>[AutofillHints.oneTimeCode],
       textCapitalization: TextCapitalization.none,
       toolbarOptions: ToolbarOptions(paste: true),
