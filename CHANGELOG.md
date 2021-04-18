@@ -1,3 +1,9 @@
+## 2.0.0
+
+* migrate to null safety
+* add cursor to PinFieldAutoFill
+* fix controller on PhoneFieldHint
+
 ## 1.3.1
 
 * fix bug on PhoneFormFieldHint when controller is used
