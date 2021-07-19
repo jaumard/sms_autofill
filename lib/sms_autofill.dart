@@ -27,8 +27,8 @@ class SmsAutoFill {
   Stream<String> get code => _code.stream;
 
   Future<String?> get hint async {
-    final String? version = await _channel.invokeMethod('requestPhoneHint');
-    return version;
+    final String? hint = await _channel.invokeMethod('requestPhoneHint');
+    return hint;
   }
 
   Future<void> get listenForCode async {
@@ -40,8 +40,8 @@ class SmsAutoFill {
   }
 
   Future<String> get getAppSignature async {
-    final String appSignature = await _channel.invokeMethod('getAppSignature');
-    return appSignature;
+    final String? appSignature = await _channel.invokeMethod('getAppSignature');
+    return appSignature ?? '';
   }
 }
 

@@ -1,3 +1,8 @@
+## 2.0.1
+
+* fix null safety on getSignature
+* bump pin_input_text_field
+
 ## 2.0.0
 
 * migrate to null safety
