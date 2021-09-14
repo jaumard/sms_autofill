@@ -57,6 +57,7 @@ class PinFieldAutoFill extends StatefulWidget {
   final Cursor? cursor;
   final TextInputType keyboardType;
   final TextInputAction textInputAction;
+  final bool enableInteractiveSelection;
 
   const PinFieldAutoFill({
     Key? key,
@@ -64,9 +65,11 @@ class PinFieldAutoFill extends StatefulWidget {
     this.textInputAction = TextInputAction.done,
     this.focusNode,
     this.cursor,
+    this.enableInteractiveSelection = true,
     this.controller,
     this.decoration = const UnderlineDecoration(
-        colorBuilder: FixedColorBuilder(Colors.black), textStyle: TextStyle(color: Colors.black)),
+        colorBuilder: FixedColorBuilder(Colors.black),
+        textStyle: TextStyle(color: Colors.black)),
     this.onCodeSubmitted,
     this.onCodeChanged,
     this.currentCode,
@@ -82,7 +85,7 @@ class PinFieldAutoFill extends StatefulWidget {
 
 class _PinFieldAutoFillState extends State<PinFieldAutoFill> with CodeAutoFill {
   late TextEditingController controller;
-  bool _shouldDisposeController=false;
+  bool _shouldDisposeController = false;
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +93,7 @@ class _PinFieldAutoFillState extends State<PinFieldAutoFill> with CodeAutoFill {
       pinLength: widget.codeLength,
       decoration: widget.decoration,
       focusNode: widget.focusNode,
-      enableInteractiveSelection: true,
+      enableInteractiveSelection: widget.enableInteractiveSelection,
       autocorrect: false,
       cursor: widget.cursor,
       autofillHints: const <String>[AutofillHints.oneTimeCode],
@@ -129,7 +132,8 @@ class _PinFieldAutoFillState extends State<PinFieldAutoFill> with CodeAutoFill {
       controller = widget.controller!;
     }
 
-    if (widget.currentCode != oldWidget.currentCode || widget.currentCode != code) {
+    if (widget.currentCode != oldWidget.currentCode ||
+        widget.currentCode != code) {
       code = widget.currentCode;
       codeUpdated();
     }
@@ -179,7 +183,8 @@ class PhoneFormFieldHint extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _PhoneFieldHint(key: key,
+    return _PhoneFieldHint(
+        key: key,
         child: child,
         inputFormatters: inputFormatters,
         controller: controller,
@@ -211,7 +216,8 @@ class PhoneFieldHint extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _PhoneFieldHint(key: key,
+    return _PhoneFieldHint(
+        key: key,
         child: child,
         inputFormatters: inputFormatters,
         controller: controller,
@@ -261,9 +267,14 @@ class _PhoneFieldHintState extends State<_PhoneFieldHint> {
 
   @override
   void initState() {
-    _controller = widget.controller ?? widget.child?.controller ?? _createInternalController();
-    _inputFormatters = widget.inputFormatters ?? widget.child?.inputFormatters ?? [];
-    _focusNode = widget.focusNode ?? widget.child?.focusNode ?? _createInternalFocusNode();
+    _controller = widget.controller ??
+        widget.child?.controller ??
+        _createInternalController();
+    _inputFormatters =
+        widget.inputFormatters ?? widget.child?.inputFormatters ?? [];
+    _focusNode = widget.focusNode ??
+        widget.child?.focusNode ??
+        _createInternalFocusNode();
     _focusNode.addListener(() async {
       if (_focusNode.hasFocus && !_hintShown) {
         _hintShown = true;
@@ -278,34 +289,37 @@ class _PhoneFieldHintState extends State<_PhoneFieldHint> {
 
   @override
   Widget build(BuildContext context) {
+    final decoration = widget.decoration ??
+        InputDecoration(
+          suffixIcon: Platform.isAndroid
+              ? IconButton(
+                  icon: Icon(Icons.phonelink_setup),
+                  onPressed: () async {
+                    _hintShown = true;
+                    await _askPhoneHint();
+                  },
+                )
+              : null,
+        );
 
-    final decoration = widget.decoration ?? InputDecoration(
-      suffixIcon: Platform.isAndroid
-          ? IconButton(
-        icon: Icon(Icons.phonelink_setup),
-        onPressed: () async {
-          _hintShown = true;
-          await _askPhoneHint();
-        },
-      ) : null,
-    );
-
-    return widget.child ?? _createField(widget.isFormWidget, decoration, widget.validator);
+    return widget.child ??
+        _createField(widget.isFormWidget, decoration, widget.validator);
   }
 
   @override
   void dispose() {
-    if(_isUsingInternalController) {
+    if (_isUsingInternalController) {
       _controller.dispose();
     }
 
-    if(_isUsingInternalFocusNode) {
+    if (_isUsingInternalFocusNode) {
       _focusNode.dispose();
     }
     super.dispose();
   }
 
-  Widget _createField(bool isFormWidget, InputDecoration decoration, FormFieldValidator? validator) {
+  Widget _createField(bool isFormWidget, InputDecoration decoration,
+      FormFieldValidator? validator) {
     return isFormWidget
         ? _createTextFormField(decoration, validator)
         : _createTextField(decoration);
@@ -323,7 +337,8 @@ class _PhoneFieldHintState extends State<_PhoneFieldHint> {
     );
   }
 
-  Widget _createTextFormField(InputDecoration decoration, FormFieldValidator? validator) {
+  Widget _createTextFormField(
+      InputDecoration decoration, FormFieldValidator? validator) {
     return TextFormField(
       validator: validator,
       autofocus: widget.autoFocus,
@@ -406,7 +421,8 @@ mixin CodeAutoFill {
   void codeUpdated();
 }
 
-class _TextFieldPinAutoFillState extends State<TextFieldPinAutoFill> with CodeAutoFill {
+class _TextFieldPinAutoFillState extends State<TextFieldPinAutoFill>
+    with CodeAutoFill {
   final TextEditingController _textController = TextEditingController(text: '');
 
   @override
@@ -446,7 +462,8 @@ class _TextFieldPinAutoFillState extends State<TextFieldPinAutoFill> with CodeAu
 
   @override
   void didUpdateWidget(TextFieldPinAutoFill oldWidget) {
-    if (widget.currentCode != oldWidget.currentCode || widget.currentCode != _getCode()) {
+    if (widget.currentCode != oldWidget.currentCode ||
+        widget.currentCode != _getCode()) {
       code = widget.currentCode;
       codeUpdated();
     }

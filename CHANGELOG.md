@@ -1,3 +1,8 @@
+## 2.1.0
+
+* migrate to android embedded v2
+* add enableInteractiveSelection config param
+
 ## 2.0.1
 
 * fix null safety on getSignature
