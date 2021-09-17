@@ -1,3 +1,7 @@
+## 2.1.2
+
+* fix crash on android
+
 ## 2.1.1
 
 * fix crash on android

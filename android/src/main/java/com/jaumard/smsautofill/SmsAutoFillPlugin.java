@@ -175,7 +175,7 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
         if (broadcastReceiver != null) {
             try {
                 activity.unregisterReceiver(broadcastReceiver);
-            } catch (ex) {
+            } catch (Exception ex) {
                 // silent catch to avoir crash if receiver is not registered
             }
             broadcastReceiver = null;
