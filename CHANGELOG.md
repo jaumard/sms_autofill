@@ -1,3 +1,7 @@
+## 2.1.1
+
+* fix crash on android
+
 ## 2.1.0
 
 * migrate to android embedded v2
