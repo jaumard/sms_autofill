@@ -1,4 +1,4 @@
-package com.jaumard.smsautofill;
+package android.src.main.java.com.jaumard.smsautofill;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -47,6 +47,7 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
  * SmsAutoFillPlugin
  */
 public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCallHandler {
+
     private static final int PHONE_HINT_REQUEST = 11012;
     private static final String channelName = "sms_autofill";
 
@@ -58,7 +59,7 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
 
         @Override
         public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
-            if (requestCode == PHONE_HINT_REQUEST && pendingHintResult != null) {
+            if (requestCode == SmsAutoFillPlugin.PHONE_HINT_REQUEST && pendingHintResult != null) {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     Credential credential = data.getParcelableExtra(Credential.EXTRA_KEY);
                     final String phoneNumber = credential.getId();
@@ -72,10 +73,11 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
         }
     };
 
-    public SmsAutoFillPlugin() {}
+    public SmsAutoFillPlugin() {
+    }
 
     private SmsAutoFillPlugin(Registrar registrar) {
-        this.activity = registrar.activity();
+        activity = registrar.activity();
         setupChannel(registrar.messenger());
         registrar.addActivityResultListener(activityResultListener);
     }
@@ -99,6 +101,7 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
                 requestHint();
                 break;
             case "listenForCode":
+                final String smsCodeRegexPattern = call.argument("smsCodeRegexPattern");
                 SmsRetrieverClient client = SmsRetriever.getClient(activity);
                 Task<Void> task = client.startSmsRetriever();
 
@@ -106,8 +109,10 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
                     @Override
                     public void onSuccess(Void aVoid) {
                         unregisterReceiver();// unregister existing receiver
-                        broadcastReceiver = new SmsBroadcastReceiver(new WeakReference<>(SmsAutoFillPlugin.this));
-                        activity.registerReceiver(broadcastReceiver, new IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION));
+                        broadcastReceiver = new SmsBroadcastReceiver(new WeakReference<>(SmsAutoFillPlugin.this),
+                                smsCodeRegexPattern);
+                        activity.registerReceiver(broadcastReceiver,
+                                new IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION));
                         result.success(null);
                     }
                 });
@@ -137,8 +142,8 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
     @TargetApi(Build.VERSION_CODES.ECLAIR)
     private void requestHint() {
 
-        if(!isSimSupport()) {
-            if(pendingHintResult != null) {
+        if (!isSimSupport()) {
+            if (pendingHintResult != null) {
                 pendingHintResult.success(null);
             }
             return;
@@ -154,20 +159,19 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
                 mCredentialsClient, hintRequest);
         try {
             activity.startIntentSenderForResult(intent.getIntentSender(),
-                    PHONE_HINT_REQUEST, null, 0, 0, 0);
+                    SmsAutoFillPlugin.PHONE_HINT_REQUEST, null, 0, 0, 0);
         } catch (IntentSender.SendIntentException e) {
             e.printStackTrace();
         }
     }
 
-    public boolean isSimSupport()
-    {
+    public boolean isSimSupport() {
         TelephonyManager telephonyManager = (TelephonyManager) activity.getSystemService(Context.TELEPHONY_SERVICE);
         return !(telephonyManager.getSimState() == TelephonyManager.SIM_STATE_ABSENT);
     }
 
     private void setupChannel(BinaryMessenger messenger) {
-        channel = new MethodChannel(messenger, channelName);
+        channel = new MethodChannel(messenger, SmsAutoFillPlugin.channelName);
         channel.setMethodCallHandler(this);
     }
 
@@ -183,14 +187,11 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
     }
 
     /**
-     * This {@code FlutterPlugin} has been associated with a {@link
-     * FlutterEngine} instance.
+     * This {@code FlutterPlugin} has been associated with a {@link FlutterEngine} instance.
      *
      * <p>Relevant resources that this {@code FlutterPlugin} may need are provided via the {@code
-     * binding}. The {@code binding} may be cached and referenced until {@link
-     * #onDetachedFromEngine(FlutterPluginBinding)} is invoked and returns.
-     *
-     * @param binding
+     * binding}. The {@code binding} may be cached and referenced until {@link #onDetachedFromEngine(FlutterPluginBinding)}
+     * is invoked and returns.
      */
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
@@ -198,17 +199,14 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
     }
 
     /**
-     * This {@code FlutterPlugin} has been removed from a {@link
-     * FlutterEngine} instance.
+     * This {@code FlutterPlugin} has been removed from a {@link FlutterEngine} instance.
      *
      * <p>The {@code binding} passed to this method is the same instance that was passed in {@link
-     * #onAttachedToEngine(FlutterPluginBinding)}. It is provided again in this method as a
-     * convenience. The {@code binding} may be referenced during the execution of this method, but it
-     * must not be cached or referenced after this method returns.
+     * #onAttachedToEngine(FlutterPluginBinding)}. It is provided again in this method as a convenience. The {@code
+     * binding} may be referenced during the execution of this method, but it must not be cached or referenced after
+     * this method returns.
      *
      * <p>{@code FlutterPlugin}s should release all resources in this method.
-     *
-     * @param binding
      */
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
@@ -216,8 +214,7 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
     }
 
     /**
-     * This {@code ActivityAware} {@link FlutterPlugin} is now
-     * associated with an {@link Activity}.
+     * This {@code ActivityAware} {@link FlutterPlugin} is now associated with an {@link Activity}.
      *
      * <p>This method can be invoked in 1 of 2 situations:
      *
@@ -239,8 +236,6 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
      * #onDetachedFromActivity()} is invoked. At the conclusion of either of those methods, the
      * binding is no longer valid. Clear any references to the binding or its resources, and do not
      * invoke any further methods on the binding or its resources.
-     *
-     * @param binding
      */
     @Override
     public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
@@ -249,24 +244,22 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
     }
 
     /**
-     * The {@link Activity} that was attached and made available in {@link
-     * #onAttachedToActivity(ActivityPluginBinding)} has been detached from this {@code
-     * ActivityAware}'s {@link FlutterEngine} for the purpose of
-     * processing a configuration change.
+     * The {@link Activity} that was attached and made available in {@link #onAttachedToActivity(ActivityPluginBinding)}
+     * has been detached from this {@code ActivityAware}'s {@link FlutterEngine} for the purpose of processing a
+     * configuration change.
      *
      * <p>By the end of this method, the {@link Activity} that was made available in
-     * {@link #onAttachedToActivity(ActivityPluginBinding)} is no longer valid. Any references to the
-     * associated {@link Activity} or {@link ActivityPluginBinding} should be cleared.
+     * {@link #onAttachedToActivity(ActivityPluginBinding)} is no longer valid. Any references to the associated {@link
+     * Activity} or {@link ActivityPluginBinding} should be cleared.
      *
      * <p>This method should be quickly followed by {@link
-     * #onReattachedToActivityForConfigChanges(ActivityPluginBinding)}, which signifies that a new
-     * {@link Activity} has been created with the new configuration options. That method
-     * provides a new {@link ActivityPluginBinding}, which references the newly created and associated
-     * {@link Activity}.
+     * #onReattachedToActivityForConfigChanges(ActivityPluginBinding)}, which signifies that a new {@link Activity} has
+     * been created with the new configuration options. That method provides a new {@link ActivityPluginBinding}, which
+     * references the newly created and associated {@link Activity}.
      *
      * <p>Any {@code Lifecycle} listeners that were registered in {@link
-     * #onAttachedToActivity(ActivityPluginBinding)} should be deregistered here to avoid a possible
-     * memory leak and other side effects.
+     * #onAttachedToActivity(ActivityPluginBinding)} should be deregistered here to avoid a possible memory leak and
+     * other side effects.
      */
     @Override
     public void onDetachedFromActivityForConfigChanges() {
@@ -274,18 +267,14 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
     }
 
     /**
-     * This plugin and its {@link FlutterEngine} have been re-attached to
-     * an {@link Activity} after the {@link Activity} was recreated to handle
-     * configuration changes.
+     * This plugin and its {@link FlutterEngine} have been re-attached to an {@link Activity} after the {@link Activity}
+     * was recreated to handle configuration changes.
      *
      * <p>{@code binding} includes a reference to the new instance of the {@link
-     * Activity}. {@code binding} and its references may be cached and used from now until
-     * either {@link #onDetachedFromActivityForConfigChanges()} or {@link #onDetachedFromActivity()}
-     * is invoked. At the conclusion of either of those methods, the binding is no longer valid. Clear
-     * any references to the binding or its resources, and do not invoke any further methods on the
-     * binding or its resources.
-     *
-     * @param binding
+     * Activity}. {@code binding} and its references may be cached and used from now until either {@link
+     * #onDetachedFromActivityForConfigChanges()} or {@link #onDetachedFromActivity()} is invoked. At the conclusion of
+     * either of those methods, the binding is no longer valid. Clear any references to the binding or its resources,
+     * and do not invoke any further methods on the binding or its resources.
      */
     @Override
     public void onReattachedToActivityForConfigChanges(@NonNull ActivityPluginBinding binding) {
@@ -322,10 +311,13 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
     }
 
     private static class SmsBroadcastReceiver extends BroadcastReceiver {
-        final WeakReference<SmsAutoFillPlugin> plugin;
 
-        private SmsBroadcastReceiver(WeakReference<SmsAutoFillPlugin> plugin) {
+        final WeakReference<SmsAutoFillPlugin> plugin;
+        final String smsCodeRegexPattern;
+
+        private SmsBroadcastReceiver(WeakReference<SmsAutoFillPlugin> plugin, String smsCodeRegexPattern) {
             this.plugin = plugin;
+            this.smsCodeRegexPattern = smsCodeRegexPattern;
         }
 
         @Override
@@ -345,7 +337,7 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
                         if (status.getStatusCode() == CommonStatusCodes.SUCCESS) {
                             // Get SMS message contents
                             String message = (String) extras.get(SmsRetriever.EXTRA_SMS_MESSAGE);
-                            Pattern pattern = Pattern.compile("\\d{4,6}");
+                            Pattern pattern = Pattern.compile(smsCodeRegexPattern);
                             if (message != null) {
                                 Matcher matcher = pattern.matcher(message);
 
