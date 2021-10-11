@@ -1,4 +1,4 @@
-package android.src.main.java.com.jaumard.smsautofill;
+package com.jaumard.smsautofill;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
