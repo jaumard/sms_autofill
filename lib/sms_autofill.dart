@@ -59,6 +59,7 @@ class PinFieldAutoFill extends StatefulWidget {
   final TextInputAction textInputAction;
   final bool enableInteractiveSelection;
   final String? smsCodeRegexPattern;
+  final List<TextInputFormatter>? inputFormatters;
 
   const PinFieldAutoFill(
       {Key? key,
@@ -66,6 +67,7 @@ class PinFieldAutoFill extends StatefulWidget {
       this.textInputAction = TextInputAction.done,
       this.focusNode,
       this.cursor,
+      this.inputFormatters,
       this.enableInteractiveSelection = true,
       this.controller,
       this.decoration = const UnderlineDecoration(
@@ -103,6 +105,7 @@ class _PinFieldAutoFillState extends State<PinFieldAutoFill> with CodeAutoFill {
       keyboardType: widget.keyboardType,
       autoFocus: widget.autoFocus,
       controller: controller,
+      inputFormatters: widget.inputFormatters,
       textInputAction: widget.textInputAction,
       onSubmit: widget.onCodeSubmitted,
     );
@@ -368,6 +371,8 @@ class TextFieldPinAutoFill extends StatefulWidget {
   final bool obscureText;
   final TextStyle? style;
   final String? smsCodeRegexPattern;
+  final List<TextInputFormatter>? inputFormatters;
+
 
   const TextFieldPinAutoFill(
       {Key? key,
@@ -375,6 +380,7 @@ class TextFieldPinAutoFill extends StatefulWidget {
       this.obscureText = false,
       this.onCodeSubmitted,
       this.style,
+      this.inputFormatters,
       this.onCodeChanged,
       this.decoration = const InputDecoration(),
       this.currentCode,
@@ -426,6 +432,7 @@ class _TextFieldPinAutoFillState extends State<TextFieldPinAutoFill> with CodeAu
       maxLength: widget.codeLength,
       decoration: widget.decoration,
       style: widget.style,
+      inputFormatters: widget.inputFormatters,
       autofillHints: const <String>[AutofillHints.oneTimeCode],
       onSubmitted: widget.onCodeSubmitted,
       onChanged: widget.onCodeChanged,
