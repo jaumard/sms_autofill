@@ -1,3 +1,8 @@
+## 2.2.0
+
+* add ability to update regex to retrieve the code from sms
+* add inputFormatters to PinFieldAutoFill and TextFieldPinAutoFill
+
 ## 2.1.2
 
 * fix crash on android

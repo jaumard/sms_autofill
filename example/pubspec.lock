@@ -94,7 +94,7 @@ packages:
       name: pin_input_text_field
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.1.0"
+    version: "4.1.1"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -106,7 +106,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "2.1.0"
+    version: "2.2.0"
   source_span:
     dependency: transitive
     description:
