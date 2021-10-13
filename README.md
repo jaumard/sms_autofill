@@ -9,7 +9,7 @@ No permission to read SMS messages is asked to the user as there no need thanks 
 ## Usage
 You have two widgets at your disposable for autofill an SMS code, PinFieldAutoFill and TextFieldPinAutoFill.
 
-Just before you sent your phone number to the backend, you need to let know the plugin that it need to listen for the SMS with the code.
+Just before you sent your phone number to the backend, you need to let the plugin know that it needs to listen for the SMS with the code.
 
 To do that you need to do:
 
