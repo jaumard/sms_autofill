@@ -116,7 +116,6 @@ class _PinFieldAutoFillState extends State<PinFieldAutoFill> with CodeAutoFill {
     _shouldDisposeController = widget.controller == null;
     controller = widget.controller ?? TextEditingController(text: '');
     code = widget.currentCode;
-    codeUpdated();
     controller.addListener(() {
       if (controller.text != code) {
         code = controller.text;
