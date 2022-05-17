@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pin_input_text_field/pin_input_text_field.dart';
 import 'package:sms_autofill/sms_autofill.dart';
+import 'package:sms_otp_auto_verify/sms_otp_auto_verify.dart';
 
 void main() => runApp(MyApp());
 
@@ -22,7 +22,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String _code="";
   String signature = "{{ app signature }}";
-
+  TextEditingController otp = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -33,6 +33,14 @@ class _HomePageState extends State<HomePage> {
     SmsAutoFill().unregisterListener();
     super.dispose();
   }
+
+  BoxDecoration get _pinPutDecoration {
+    return BoxDecoration(
+      border: Border.all(color: Color(0xff35E3DD), width: 2),
+      borderRadius: BorderRadius.circular(10),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +59,32 @@ class _HomePageState extends State<HomePage> {
             children: <Widget>[
               PhoneFieldHint(),
               Spacer(),
+
+              TextFieldPin(
+                textController: otp,
+                autoFocus: true,
+                codeLength: 6,
+                alignment: MainAxisAlignment.center,
+                defaultBoxSize: 40.0,
+                margin: 5.0,
+                selectedBoxSize: 57.0,
+                textStyle: TextStyle(fontSize: 16.0),
+                defaultDecoration: _pinPutDecoration.copyWith(
+                  color: Colors.white,
+                  border: Border.all(color: Color(0xffEFEEF3)),
+                ),
+                selectedDecoration: _pinPutDecoration.copyWith(
+                    border: Border.all(color: Color(0xff35E3DD))),
+                onChange: (code) {
+                  if (code.length == 6) {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                    otp.text = code;
+                  }
+                },
+              ),
+
               PinFieldAutoFill(
+
                 decoration: UnderlineDecoration(
                   textStyle: TextStyle(fontSize: 20, color: Colors.black),
                   colorBuilder: FixedColorBuilder(Colors.black.withOpacity(0.3)),
@@ -68,6 +101,7 @@ class _HomePageState extends State<HomePage> {
               TextFieldPinAutoFill(
                 currentCode: _code,
               ),
+              //this is jay
               Spacer(),
               ElevatedButton(
                 child: Text('Listen for sms code'),
