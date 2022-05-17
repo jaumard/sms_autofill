@@ -39,6 +39,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  sms_otp_auto_verify:
+    dependency: "direct main"
+    description:
+      name: sms_otp_auto_verify
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.0"
   typed_data:
     dependency: transitive
     description:

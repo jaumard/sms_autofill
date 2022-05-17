@@ -60,35 +60,9 @@ class _HomePageState extends State<HomePage> {
               PhoneFieldHint(),
               Spacer(),
 
-              TextFieldPin(
-                textController: otp,
-                autoFocus: true,
-                codeLength: 6,
-                alignment: MainAxisAlignment.center,
-                defaultBoxSize: 40.0,
-                margin: 5.0,
-                selectedBoxSize: 57.0,
-                textStyle: TextStyle(fontSize: 16.0),
-                defaultDecoration: _pinPutDecoration.copyWith(
-                  color: Colors.white,
-                  border: Border.all(color: Color(0xffEFEEF3)),
-                ),
-                selectedDecoration: _pinPutDecoration.copyWith(
-                    border: Border.all(color: Color(0xff35E3DD))),
-                onChange: (code) {
-                  if (code.length == 6) {
-                    FocusScope.of(context).requestFocus(FocusNode());
-                    otp.text = code;
-                  }
-                },
-              ),
-
               PinFieldAutoFill(
-
-                decoration: UnderlineDecoration(
-                  textStyle: TextStyle(fontSize: 20, color: Colors.black),
-                  colorBuilder: FixedColorBuilder(Colors.black.withOpacity(0.3)),
-                ),
+                codeLength: 6,
+                boxSize: 40.0,
                 currentCode: _code,
                 onCodeSubmitted: (code) {},
                 onCodeChanged: (code) {

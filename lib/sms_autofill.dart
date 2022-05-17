@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:sms_otp_auto_verify/sms_otp_auto_verify.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pin_input_text_field/pin_input_text_field.dart';
@@ -45,6 +46,7 @@ class SmsAutoFill {
   }
 }
 
+
 class PinFieldAutoFill extends StatefulWidget {
   final int codeLength;
   final bool autoFocus;
@@ -54,6 +56,7 @@ class PinFieldAutoFill extends StatefulWidget {
   final Function(String?)? onCodeChanged;
   final PinDecoration decoration;
   final FocusNode? focusNode;
+  final double? boxSize;
   final Cursor? cursor;
   final TextInputType keyboardType;
   final TextInputAction textInputAction;
@@ -66,6 +69,7 @@ class PinFieldAutoFill extends StatefulWidget {
       this.keyboardType = const TextInputType.numberWithOptions(),
       this.textInputAction = TextInputAction.done,
       this.focusNode,
+        this.boxSize,
       this.cursor,
       this.inputFormatters,
       this.enableInteractiveSelection = true,
@@ -85,30 +89,61 @@ class PinFieldAutoFill extends StatefulWidget {
     return _PinFieldAutoFillState();
   }
 }
-
+BoxDecoration get _pinPutDecoration {
+  return BoxDecoration(
+    border: Border.all(color: Color(0xff35E3DD), width: 2),
+    borderRadius: BorderRadius.circular(10),
+  );
+}
 class _PinFieldAutoFillState extends State<PinFieldAutoFill> with CodeAutoFill {
   late TextEditingController controller;
   bool _shouldDisposeController = false;
 
   @override
   Widget build(BuildContext context) {
-    return PinInputTextField(
-      pinLength: widget.codeLength,
-      decoration: widget.decoration,
-      focusNode: widget.focusNode,
-      enableInteractiveSelection: widget.enableInteractiveSelection,
-      autocorrect: false,
-      cursor: widget.cursor,
-      autofillHints: const <String>[AutofillHints.oneTimeCode],
-      textCapitalization: TextCapitalization.none,
-      toolbarOptions: ToolbarOptions(paste: true),
-      keyboardType: widget.keyboardType,
-      autoFocus: widget.autoFocus,
-      controller: controller,
-      inputFormatters: widget.inputFormatters,
-      textInputAction: widget.textInputAction,
-      onSubmit: widget.onCodeSubmitted,
+
+    return TextFieldPin(
+      textController: controller,
+      autoFocus: true,
+      codeLength: widget.codeLength,
+      alignment: MainAxisAlignment.center,
+      defaultBoxSize: widget.boxSize!,
+      margin: 5.0,
+      selectedBoxSize: widget.boxSize,
+      textStyle: TextStyle(fontSize: 16.0),
+      defaultDecoration: _pinPutDecoration.copyWith(
+        color: Colors.white,
+        border: Border.all(color: Color(0xffEFEEF3)),
+      ),
+      selectedDecoration: _pinPutDecoration.copyWith(
+          border: Border.all(color: Color(0xff35E3DD))),
+      onChange: (code) {
+        if (code.length == 6) {
+          FocusScope.of(context).requestFocus(FocusNode());
+          controller.text = code;
+        }
+      },
     );
+
+
+
+    //   PinInputTextField(
+    //   pinLength: widget.codeLength,
+    //   decoration: widget.decoration,
+    //   focusNode: widget.focusNode,
+    //   enableInteractiveSelection: widget.enableInteractiveSelection,
+    //   autocorrect: false,
+    //   cursor: widget.cursor,
+    //   autofillHints: const <String>[AutofillHints.oneTimeCode],
+    //   textCapitalization: TextCapitalization.none,
+    //   toolbarOptions: ToolbarOptions(paste: true),
+    //   keyboardType: widget.keyboardType,
+    //   autoFocus: widget.autoFocus,
+    //   controller: controller,
+    //   inputFormatters: widget.inputFormatters,
+    //   textInputAction: widget.textInputAction,
+    //   onSubmit: widget.onCodeSubmitted,
+    // );
   }
 
   @override
