@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sms_autofill/sms_autofill.dart';
-import 'package:sms_otp_auto_verify/sms_otp_auto_verify.dart';
 
 void main() => runApp(MyApp());
 
@@ -20,7 +19,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String _code="";
+  String _code = "";
   String signature = "{{ app signature }}";
   TextEditingController otp = TextEditingController();
   @override
@@ -40,7 +39,6 @@ class _HomePageState extends State<HomePage> {
       borderRadius: BorderRadius.circular(10),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +103,8 @@ class _HomePageState extends State<HomePage> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => CodeAutoFillTestPage()));
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => CodeAutoFillTestPage()));
                 },
                 child: Text("Test CodeAutoFill mixin"),
               )
@@ -122,7 +121,8 @@ class CodeAutoFillTestPage extends StatefulWidget {
   _CodeAutoFillTestPageState createState() => _CodeAutoFillTestPageState();
 }
 
-class _CodeAutoFillTestPageState extends State<CodeAutoFillTestPage> with CodeAutoFill {
+class _CodeAutoFillTestPageState extends State<CodeAutoFillTestPage>
+    with CodeAutoFill {
   String? appSignature;
   String? otpCode;
 
