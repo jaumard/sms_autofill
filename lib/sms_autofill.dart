@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pin_input_text_field/pin_input_text_field.dart';
+import 'package:sms_autofill/sms_autofill.dart';
+import 'package:sms_autofill/text_field_pin.dart';
 
 export 'package:pin_input_text_field/pin_input_text_field.dart';
 
@@ -32,7 +34,8 @@ class SmsAutoFill {
   }
 
   Future<void> listenForCode({String smsCodeRegexPattern: '\\d{4,6}'}) async {
-    await _channel.invokeMethod('listenForCode', <String, String>{'smsCodeRegexPattern': smsCodeRegexPattern});
+    await _channel.invokeMethod('listenForCode',
+        <String, String>{'smsCodeRegexPattern': smsCodeRegexPattern});
   }
 
   Future<void> unregisterListener() async {
@@ -54,6 +57,7 @@ class PinFieldAutoFill extends StatefulWidget {
   final Function(String?)? onCodeChanged;
   final PinDecoration decoration;
   final FocusNode? focusNode;
+  final double? boxSize;
   final Cursor? cursor;
   final TextInputType keyboardType;
   final TextInputAction textInputAction;
@@ -66,12 +70,14 @@ class PinFieldAutoFill extends StatefulWidget {
       this.keyboardType = const TextInputType.numberWithOptions(),
       this.textInputAction = TextInputAction.done,
       this.focusNode,
+      this.boxSize,
       this.cursor,
       this.inputFormatters,
       this.enableInteractiveSelection = true,
       this.controller,
       this.decoration = const UnderlineDecoration(
-          colorBuilder: FixedColorBuilder(Colors.black), textStyle: TextStyle(color: Colors.black)),
+          colorBuilder: FixedColorBuilder(Colors.black),
+          textStyle: TextStyle(color: Colors.black)),
       this.onCodeSubmitted,
       this.onCodeChanged,
       this.currentCode,
@@ -86,29 +92,59 @@ class PinFieldAutoFill extends StatefulWidget {
   }
 }
 
+BoxDecoration get _pinPutDecoration {
+  return BoxDecoration(
+    border: Border.all(color: Color(0xff35E3DD), width: 2),
+    borderRadius: BorderRadius.circular(10),
+  );
+}
+
 class _PinFieldAutoFillState extends State<PinFieldAutoFill> with CodeAutoFill {
   late TextEditingController controller;
   bool _shouldDisposeController = false;
 
   @override
   Widget build(BuildContext context) {
-    return PinInputTextField(
-      pinLength: widget.codeLength,
-      decoration: widget.decoration,
-      focusNode: widget.focusNode,
-      enableInteractiveSelection: widget.enableInteractiveSelection,
-      autocorrect: false,
-      cursor: widget.cursor,
-      autofillHints: const <String>[AutofillHints.oneTimeCode],
-      textCapitalization: TextCapitalization.none,
-      toolbarOptions: ToolbarOptions(paste: true),
-      keyboardType: widget.keyboardType,
-      autoFocus: widget.autoFocus,
-      controller: controller,
-      inputFormatters: widget.inputFormatters,
-      textInputAction: widget.textInputAction,
-      onSubmit: widget.onCodeSubmitted,
+    return TextFieldPin(
+      textController: controller,
+      autoFocus: true,
+      codeLength: widget.codeLength,
+      alignment: MainAxisAlignment.center,
+      defaultBoxSize: widget.boxSize!,
+      margin: 5.0,
+      selectedBoxSize: widget.boxSize,
+      textStyle: TextStyle(fontSize: 16.0),
+      defaultDecoration: _pinPutDecoration.copyWith(
+        color: Colors.white,
+        border: Border.all(color: Color(0xffEFEEF3)),
+      ),
+      selectedDecoration: _pinPutDecoration.copyWith(
+          border: Border.all(color: Color(0xff35E3DD))),
+      onChange: (code) {
+        if (code.length == 6) {
+          FocusScope.of(context).requestFocus(FocusNode());
+          controller.text = code;
+        }
+      },
     );
+
+    //   PinInputTextField(
+    //   pinLength: widget.codeLength,
+    //   decoration: widget.decoration,
+    //   focusNode: widget.focusNode,
+    //   enableInteractiveSelection: widget.enableInteractiveSelection,
+    //   autocorrect: false,
+    //   cursor: widget.cursor,
+    //   autofillHints: const <String>[AutofillHints.oneTimeCode],
+    //   textCapitalization: TextCapitalization.none,
+    //   toolbarOptions: ToolbarOptions(paste: true),
+    //   keyboardType: widget.keyboardType,
+    //   autoFocus: widget.autoFocus,
+    //   controller: controller,
+    //   inputFormatters: widget.inputFormatters,
+    //   textInputAction: widget.textInputAction,
+    //   onSubmit: widget.onCodeSubmitted,
+    // );
   }
 
   @override
@@ -136,7 +172,8 @@ class _PinFieldAutoFillState extends State<PinFieldAutoFill> with CodeAutoFill {
       controller = widget.controller!;
     }
 
-    if (widget.currentCode != oldWidget.currentCode || widget.currentCode != code) {
+    if (widget.currentCode != oldWidget.currentCode ||
+        widget.currentCode != code) {
       code = widget.currentCode;
       codeUpdated();
     }
@@ -270,9 +307,14 @@ class _PhoneFieldHintState extends State<_PhoneFieldHint> {
 
   @override
   void initState() {
-    _controller = widget.controller ?? widget.child?.controller ?? _createInternalController();
-    _inputFormatters = widget.inputFormatters ?? widget.child?.inputFormatters ?? [];
-    _focusNode = widget.focusNode ?? widget.child?.focusNode ?? _createInternalFocusNode();
+    _controller = widget.controller ??
+        widget.child?.controller ??
+        _createInternalController();
+    _inputFormatters =
+        widget.inputFormatters ?? widget.child?.inputFormatters ?? [];
+    _focusNode = widget.focusNode ??
+        widget.child?.focusNode ??
+        _createInternalFocusNode();
     _focusNode.addListener(() async {
       if (_focusNode.hasFocus && !_hintShown) {
         _hintShown = true;
@@ -300,7 +342,8 @@ class _PhoneFieldHintState extends State<_PhoneFieldHint> {
               : null,
         );
 
-    return widget.child ?? _createField(widget.isFormWidget, decoration, widget.validator);
+    return widget.child ??
+        _createField(widget.isFormWidget, decoration, widget.validator);
   }
 
   @override
@@ -315,8 +358,11 @@ class _PhoneFieldHintState extends State<_PhoneFieldHint> {
     super.dispose();
   }
 
-  Widget _createField(bool isFormWidget, InputDecoration decoration, FormFieldValidator? validator) {
-    return isFormWidget ? _createTextFormField(decoration, validator) : _createTextField(decoration);
+  Widget _createField(bool isFormWidget, InputDecoration decoration,
+      FormFieldValidator? validator) {
+    return isFormWidget
+        ? _createTextFormField(decoration, validator)
+        : _createTextField(decoration);
   }
 
   Widget _createTextField(InputDecoration decoration) {
@@ -331,7 +377,8 @@ class _PhoneFieldHintState extends State<_PhoneFieldHint> {
     );
   }
 
-  Widget _createTextFormField(InputDecoration decoration, FormFieldValidator? validator) {
+  Widget _createTextFormField(
+      InputDecoration decoration, FormFieldValidator? validator) {
     return TextFormField(
       validator: validator,
       autofocus: widget.autoFocus,
@@ -372,7 +419,6 @@ class TextFieldPinAutoFill extends StatefulWidget {
   final TextStyle? style;
   final String? smsCodeRegexPattern;
   final List<TextInputFormatter>? inputFormatters;
-
 
   const TextFieldPinAutoFill(
       {Key? key,
@@ -421,7 +467,8 @@ mixin CodeAutoFill {
   void codeUpdated();
 }
 
-class _TextFieldPinAutoFillState extends State<TextFieldPinAutoFill> with CodeAutoFill {
+class _TextFieldPinAutoFillState extends State<TextFieldPinAutoFill>
+    with CodeAutoFill {
   final TextEditingController _textController = TextEditingController(text: '');
 
   @override
@@ -462,7 +509,8 @@ class _TextFieldPinAutoFillState extends State<TextFieldPinAutoFill> with CodeAu
 
   @override
   void didUpdateWidget(TextFieldPinAutoFill oldWidget) {
-    if (widget.currentCode != oldWidget.currentCode || widget.currentCode != _getCode()) {
+    if (widget.currentCode != oldWidget.currentCode ||
+        widget.currentCode != _getCode()) {
       code = widget.currentCode;
       codeUpdated();
     }

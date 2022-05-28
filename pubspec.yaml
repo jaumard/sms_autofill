@@ -9,9 +9,7 @@ environment:
 
 dependencies:
   pin_input_text_field: ^4.1.1
-    #git:
-    #  url: https://github.com/TinoGuo/pin_input_text_field
-    #  ref: dev
+
   flutter:
     sdk: flutter
 

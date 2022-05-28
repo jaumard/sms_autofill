@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pin_input_text_field/pin_input_text_field.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
 void main() => runApp(MyApp());
@@ -20,9 +19,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String _code="";
+  String _code = "";
   String signature = "{{ app signature }}";
-
+  TextEditingController otp = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -32,6 +31,13 @@ class _HomePageState extends State<HomePage> {
   void dispose() {
     SmsAutoFill().unregisterListener();
     super.dispose();
+  }
+
+  BoxDecoration get _pinPutDecoration {
+    return BoxDecoration(
+      border: Border.all(color: Color(0xff35E3DD), width: 2),
+      borderRadius: BorderRadius.circular(10),
+    );
   }
 
   @override
@@ -51,11 +57,10 @@ class _HomePageState extends State<HomePage> {
             children: <Widget>[
               PhoneFieldHint(),
               Spacer(),
+
               PinFieldAutoFill(
-                decoration: UnderlineDecoration(
-                  textStyle: TextStyle(fontSize: 20, color: Colors.black),
-                  colorBuilder: FixedColorBuilder(Colors.black.withOpacity(0.3)),
-                ),
+                codeLength: 6,
+                boxSize: 40.0,
                 currentCode: _code,
                 onCodeSubmitted: (code) {},
                 onCodeChanged: (code) {
@@ -68,6 +73,7 @@ class _HomePageState extends State<HomePage> {
               TextFieldPinAutoFill(
                 currentCode: _code,
               ),
+              //this is jay
               Spacer(),
               ElevatedButton(
                 child: Text('Listen for sms code'),
@@ -97,7 +103,8 @@ class _HomePageState extends State<HomePage> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => CodeAutoFillTestPage()));
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => CodeAutoFillTestPage()));
                 },
                 child: Text("Test CodeAutoFill mixin"),
               )
@@ -114,7 +121,8 @@ class CodeAutoFillTestPage extends StatefulWidget {
   _CodeAutoFillTestPageState createState() => _CodeAutoFillTestPageState();
 }
 
-class _CodeAutoFillTestPageState extends State<CodeAutoFillTestPage> with CodeAutoFill {
+class _CodeAutoFillTestPageState extends State<CodeAutoFillTestPage>
+    with CodeAutoFill {
   String? appSignature;
   String? otpCode;
 
