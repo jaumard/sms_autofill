@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pin_input_text_field/pin_input_text_field.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
 void main() => runApp(const MyApp());
