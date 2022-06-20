@@ -72,7 +72,7 @@ class _HomePageState extends State<HomePage> {
               ElevatedButton(
                 child: Text('Listen for sms code'),
                 onPressed: () async {
-                  await SmsAutoFill().listenForCode;
+                  await SmsAutoFill().listenForCode();
                 },
               ),
               ElevatedButton(

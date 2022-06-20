@@ -14,7 +14,7 @@ Just before you sent your phone number to the backend, you need to let the plugi
 To do that you need to do:
 
 ```dart
-await SmsAutoFill().listenForCode;
+await SmsAutoFill().listenForCode();
 ```
 This will listen for the SMS with the code during 5 minutes and when received, autofill the following widget.
 
