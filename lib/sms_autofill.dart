@@ -57,7 +57,7 @@ class PinFieldAutoFill extends StatefulWidget {
   final Cursor? cursor;
   final TextInputType keyboardType;
   final TextInputAction textInputAction;
-  final bool enableInteractiveSelection;
+  final bool enableInteractiveSelection, enabled;
   final String? smsCodeRegexPattern;
   final List<TextInputFormatter>? inputFormatters;
 
@@ -69,6 +69,7 @@ class PinFieldAutoFill extends StatefulWidget {
       this.cursor,
       this.inputFormatters,
       this.enableInteractiveSelection = true,
+      this.enabled = true,
       this.controller,
       this.decoration = const UnderlineDecoration(
           colorBuilder: FixedColorBuilder(Colors.black), textStyle: TextStyle(color: Colors.black)),
@@ -93,6 +94,7 @@ class _PinFieldAutoFillState extends State<PinFieldAutoFill> with CodeAutoFill {
   @override
   Widget build(BuildContext context) {
     return PinInputTextField(
+      enabled: widget.enabled,
       pinLength: widget.codeLength,
       decoration: widget.decoration,
       focusNode: widget.focusNode,
@@ -165,7 +167,7 @@ class _PinFieldAutoFillState extends State<PinFieldAutoFill> with CodeAutoFill {
 }
 
 class PhoneFormFieldHint extends StatelessWidget {
-  final bool autoFocus;
+  final bool autoFocus, enabled;
   final FocusNode? focusNode;
   final TextEditingController? controller;
   final List<TextInputFormatter>? inputFormatters;
@@ -181,6 +183,7 @@ class PhoneFormFieldHint extends StatelessWidget {
     this.validator,
     this.decoration,
     this.autoFocus = false,
+    this.enabled = true,
     this.focusNode,
   }) : super(key: key);
 
@@ -194,6 +197,7 @@ class PhoneFormFieldHint extends StatelessWidget {
         validator: validator,
         decoration: decoration,
         autoFocus: autoFocus,
+        enabled: enabled,
         focusNode: focusNode,
         isFormWidget: true);
   }
@@ -232,7 +236,7 @@ class PhoneFieldHint extends StatelessWidget {
 }
 
 class _PhoneFieldHint extends StatefulWidget {
-  final bool autoFocus;
+  final bool autoFocus, enabled;
   final FocusNode? focusNode;
   final TextEditingController? controller;
   final List<TextInputFormatter>? inputFormatters;
@@ -250,6 +254,7 @@ class _PhoneFieldHint extends StatefulWidget {
     this.isFormWidget = false,
     this.decoration,
     this.autoFocus = false,
+    this.enabled = true,
     this.focusNode,
   }) : super(key: key);
 
@@ -321,6 +326,7 @@ class _PhoneFieldHintState extends State<_PhoneFieldHint> {
 
   Widget _createTextField(InputDecoration decoration) {
     return TextField(
+      enabled: widget.enabled,
       autofocus: widget.autoFocus,
       focusNode: _focusNode,
       autofillHints: [AutofillHints.telephoneNumber],
@@ -333,6 +339,7 @@ class _PhoneFieldHintState extends State<_PhoneFieldHint> {
 
   Widget _createTextFormField(InputDecoration decoration, FormFieldValidator? validator) {
     return TextFormField(
+      enabled: widget.enabled,
       validator: validator,
       autofocus: widget.autoFocus,
       focusNode: _focusNode,
@@ -362,7 +369,7 @@ class _PhoneFieldHintState extends State<_PhoneFieldHint> {
 
 class TextFieldPinAutoFill extends StatefulWidget {
   final int codeLength;
-  final bool autoFocus;
+  final bool autoFocus, enabled;
   final FocusNode? focusNode;
   final String? currentCode;
   final Function(String)? onCodeSubmitted;
@@ -385,6 +392,7 @@ class TextFieldPinAutoFill extends StatefulWidget {
       this.decoration = const InputDecoration(),
       this.currentCode,
       this.autoFocus = false,
+      this.enabled = true,
       this.codeLength = 6,
       this.smsCodeRegexPattern})
       : super(key: key);
@@ -427,6 +435,7 @@ class _TextFieldPinAutoFillState extends State<TextFieldPinAutoFill> with CodeAu
   @override
   Widget build(BuildContext context) {
     return TextField(
+      enabled: widget.enabled,
       autofocus: widget.autoFocus,
       focusNode: widget.focusNode,
       maxLength: widget.codeLength,
