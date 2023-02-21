@@ -72,8 +72,6 @@ class PinFieldAutoFill extends StatefulWidget {
       this.enabled = true,
       this.controller,
       this.decoration,
-      //  = const UnderlineDecoration(
-      //     colorBuilder: FixedColorBuilder(Colors.black), textStyle: TextStyle(color: Colors.black)),
       this.onCodeSubmitted,
       this.onCodeChanged,
       this.currentCode,
