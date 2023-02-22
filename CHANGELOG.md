@@ -1,3 +1,8 @@
+## 2.3.0
+
+* Update PinFieldAutoFill library and adapt changes
+* Add enable parameter to field widgets
+
 ## 2.2.0
 
 * add ability to update regex to retrieve the code from sms

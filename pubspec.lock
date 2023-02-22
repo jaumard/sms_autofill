@@ -50,10 +50,10 @@ packages:
     dependency: "direct main"
     description:
       name: pin_input_text_field
-      sha256: "5e2c1598779ab035aad1a18c4bb7c789140e7b2b3b31d9ad0fda89be6d50985d"
+      sha256: "712ac2dbf5098443ce90a2e1e6850654037a471bdfc9333b4e0a15e678642e39"
       url: "https://pub.dev"
     source: hosted
-    version: "4.1.1"
+    version: "4.5.0"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -69,4 +69,4 @@ packages:
     version: "2.1.4"
 sdks:
   dart: ">=2.17.0-0 <3.0.0"
-  flutter: ">=1.22.0"
+  flutter: ">=3.7.0"
