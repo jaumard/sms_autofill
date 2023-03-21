@@ -129,7 +129,7 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
                 task.addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        result.error("ERROR_START_SMS_RETRIEVER", "Can't start sms retriever", null);
+                        result.error("ERROR_START_SMS_RETRIEVER", "Can't start sms retriever", e);
                     }
                 });
                 break;
