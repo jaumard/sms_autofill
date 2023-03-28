@@ -94,7 +94,10 @@ class _PinFieldAutoFillState extends State<PinFieldAutoFill> with CodeAutoFill {
   Widget build(BuildContext context) {
     return PinInputTextField(
       pinLength: widget.codeLength,
-      decoration: widget.decoration,
+      decoration: widget.decoration ??
+          UnderlineDecoration(
+              colorBuilder: FixedColorBuilder(Colors.black),
+              textStyle: TextStyle(color: Colors.black)),
       focusNode: widget.focusNode,
       enableInteractiveSelection: widget.enableInteractiveSelection,
       autocorrect: false,
