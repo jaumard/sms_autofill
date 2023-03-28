@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:pin_input_text_field/pin_input_text_field.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.light(),
-      home: HomePage(),
+      home: const HomePage(),
     );
   }
 }
 
 class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
   @override
-  _HomePageState createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
@@ -49,11 +52,11 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              PhoneFieldHint(),
-              Spacer(),
+              const PhoneFieldHint(),
+              const Spacer(),
               PinFieldAutoFill(
                 decoration: UnderlineDecoration(
-                  textStyle: TextStyle(fontSize: 20, color: Colors.black),
+                  textStyle: const TextStyle(fontSize: 20, color: Colors.black),
                   colorBuilder: FixedColorBuilder(Colors.black.withOpacity(0.3)),
                 ),
                 currentCode: _code,
@@ -64,32 +67,32 @@ class _HomePageState extends State<HomePage> {
                   }
                 },
               ),
-              Spacer(),
+              const Spacer(),
               TextFieldPinAutoFill(
                 currentCode: _code,
               ),
-              Spacer(),
+              const Spacer(),
               ElevatedButton(
-                child: Text('Listen for sms code'),
+                child: const Text('Listen for sms code'),
                 onPressed: () async {
-                  await SmsAutoFill().listenForCode;
+                  await SmsAutoFill().listenForCode();
                 },
               ),
               ElevatedButton(
-                child: Text('Set code to 123456'),
+                child: const Text('Set code to 123456'),
                 onPressed: () async {
                   setState(() {
                     _code = '123456';
                   });
                 },
               ),
-              SizedBox(height: 8.0),
-              Divider(height: 1.0),
-              SizedBox(height: 4.0),
+              const SizedBox(height: 8.0),
+              const Divider(height: 1.0),
+              const SizedBox(height: 4.0),
               Text("App Signature : $signature"),
-              SizedBox(height: 4.0),
+              const SizedBox(height: 4.0),
               ElevatedButton(
-                child: Text('Get app signature'),
+                child: const Text('Get app signature'),
                 onPressed: () async {
                   signature = await SmsAutoFill().getAppSignature;
                   setState(() {});
@@ -99,7 +102,7 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(builder: (_) => CodeAutoFillTestPage()));
                 },
-                child: Text("Test CodeAutoFill mixin"),
+                child: const Text("Test CodeAutoFill mixin"),
               )
             ],
           ),
@@ -110,8 +113,10 @@ class _HomePageState extends State<HomePage> {
 }
 
 class CodeAutoFillTestPage extends StatefulWidget {
+  const CodeAutoFillTestPage({Key? key}) : super(key: key);
+
   @override
-  _CodeAutoFillTestPageState createState() => _CodeAutoFillTestPageState();
+  State<CodeAutoFillTestPage> createState() => _CodeAutoFillTestPageState();
 }
 
 class _CodeAutoFillTestPageState extends State<CodeAutoFillTestPage> with CodeAutoFill {
@@ -145,11 +150,11 @@ class _CodeAutoFillTestPageState extends State<CodeAutoFillTestPage> with CodeAu
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = TextStyle(fontSize: 18);
+    const textStyle = TextStyle(fontSize: 18);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Listening for code"),
+        title: const Text("Listening for code"),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -166,7 +171,7 @@ class _CodeAutoFillTestPageState extends State<CodeAutoFillTestPage> with CodeAu
             child: Builder(
               builder: (_) {
                 if (otpCode == null) {
-                  return Text("Listening for code...", style: textStyle);
+                  return const Text("Listening for code...", style: textStyle);
                 }
                 return Text("Code Received: $otpCode", style: textStyle);
               },
