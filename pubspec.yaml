@@ -1,6 +1,6 @@
 name: sms_autofill
 description: Flutter plugin to provide SMS code autofill support
-version: 2.3.0
+version: 2.3.1
 homepage: https://github.com/jaumard/sms_autofill
 
 environment:
