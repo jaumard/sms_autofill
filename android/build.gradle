@@ -22,6 +22,8 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 
 android {
+    namespace 'com.jaumard.smsautofill'
+    
     compileSdkVersion 30
 
     defaultConfig {
