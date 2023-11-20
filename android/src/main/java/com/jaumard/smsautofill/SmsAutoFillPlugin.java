@@ -11,6 +11,7 @@ import android.content.IntentSender;
 import android.os.Build;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.credentials.Credential;
@@ -59,6 +60,7 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
 
         @Override
         public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
+        try{
             if (requestCode == SmsAutoFillPlugin.PHONE_HINT_REQUEST && pendingHintResult != null) {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     Credential credential = data.getParcelableExtra(Credential.EXTRA_KEY);
@@ -67,8 +69,10 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
                 } else {
                     pendingHintResult.success(null);
                 }
-                return true;
-            }
+                return true;}
+            }catch (Exception e){
+            Log.e("Exception",e.toString());
+        }
             return false;
         }
     };
