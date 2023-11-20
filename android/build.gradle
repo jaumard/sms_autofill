@@ -23,8 +23,8 @@ apply plugin: 'com.android.library'
 
 android {
     namespace 'com.jaumard.smsautofill'
-    
-    compileSdkVersion 30
+
+    compileSdkVersion 34
 
     defaultConfig {
         minSdkVersion 18
@@ -36,6 +36,6 @@ android {
 }
 
 dependencies {
-    implementation 'com.google.android.gms:play-services-auth:19.2.0'
-    implementation 'androidx.core:core:1.6.0'
+    implementation 'com.google.android.gms:play-services-auth:20.7.0'
+    implementation 'androidx.core:core:1.12.0'
 }
