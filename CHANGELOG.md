@@ -1,3 +1,7 @@
+## 2.3.1
+
+* Fix android 14 crash
+
 ## 2.3.0
 
 * Update PinFieldAutoFill library and adapt changes
