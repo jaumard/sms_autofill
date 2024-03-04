@@ -11,6 +11,8 @@ You have two widgets at your disposable for autofill an SMS code, PinFieldAutoFi
 
 Just before you sent your phone number to the backend, you need to let the plugin know that it needs to listen for the SMS with the code.
 
+*Note: if you use ```setState({})``` inside of ```onCodeChanged``` callback, then `currentCode:` must **not be null** else it will throw a build error*
+
 To do that you need to do:
 
 ```dart
