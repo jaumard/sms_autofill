@@ -11,6 +11,7 @@ import android.content.IntentSender;
 import android.os.Build;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.credentials.Credential;
@@ -59,6 +60,7 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
 
         @Override
         public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
+        try{
             if (requestCode == SmsAutoFillPlugin.PHONE_HINT_REQUEST && pendingHintResult != null) {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     Credential credential = data.getParcelableExtra(Credential.EXTRA_KEY);
@@ -67,8 +69,10 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
                 } else {
                     pendingHintResult.success(null);
                 }
-                return true;
-            }
+                return true;}
+            }catch (Exception e){
+            Log.e("Exception",e.toString());
+        }
             return false;
         }
     };
@@ -111,8 +115,13 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
                         unregisterReceiver();// unregister existing receiver
                         broadcastReceiver = new SmsBroadcastReceiver(new WeakReference<>(SmsAutoFillPlugin.this),
                                 smsCodeRegexPattern);
-                        activity.registerReceiver(broadcastReceiver,
-                                new IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION));
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            activity.registerReceiver(broadcastReceiver,
+                                    new IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION), Context.RECEIVER_EXPORTED);
+                        } else {
+                            activity.registerReceiver(broadcastReceiver,
+                                    new IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION));
+                        }
                         result.success(null);
                     }
                 });
@@ -120,7 +129,7 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
                 task.addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        result.error("ERROR_START_SMS_RETRIEVER", "Can't start sms retriever", null);
+                        result.error("ERROR_START_SMS_RETRIEVER", "Can't start sms retriever", e);
                     }
                 });
                 break;
