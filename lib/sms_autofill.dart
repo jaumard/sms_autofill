@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -328,7 +327,7 @@ class _PhoneFieldHintState extends State<_PhoneFieldHint> {
   Widget build(BuildContext context) {
     final decoration = widget.decoration ??
         InputDecoration(
-          suffixIcon: Platform.isAndroid
+          suffixIcon: defaultTargetPlatform == TargetPlatform.android
               ? IconButton(
                   icon: Icon(Icons.phonelink_setup),
                   onPressed: () async {

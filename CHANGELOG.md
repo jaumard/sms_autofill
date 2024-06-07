@@ -1,6 +1,10 @@
-## 2.3.1
+## 2.4.0
 
 * Fix android 14 crash
+* Fix crash on phone hint
+* Fix copy/paste toolbox
+* Ignore platform channel for other platform than mobile
+* update deps
 
 ## 2.3.0
 
