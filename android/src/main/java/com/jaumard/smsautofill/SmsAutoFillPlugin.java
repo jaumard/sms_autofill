@@ -40,7 +40,7 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry;
-import io.flutter.plugin.common.PluginRegistry.Registrar;
+// import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 /**
  * SmsAutoFillPlugin
@@ -79,11 +79,11 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
     public SmsAutoFillPlugin() {
     }
 
-    private SmsAutoFillPlugin(Registrar registrar) {
-        activity = registrar.activity();
-        setupChannel(registrar.messenger());
-        registrar.addActivityResultListener(activityResultListener);
-    }
+//     private SmsAutoFillPlugin(Registrar registrar) {
+//         activity = registrar.activity();
+//         setupChannel(registrar.messenger());
+//         registrar.addActivityResultListener(activityResultListener);
+//     }
 
     public void setCode(String code) {
         channel.invokeMethod("smscode", code);
@@ -92,9 +92,9 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
     /**
      * Plugin registration.
      */
-    public static void registerWith(Registrar registrar) {
-        new SmsAutoFillPlugin(registrar);
-    }
+//     public static void registerWith(Registrar registrar) {
+//         new SmsAutoFillPlugin(registrar);
+//     }
 
     @Override
     public void onMethodCall(MethodCall call, @NonNull final Result result) {
