@@ -1,3 +1,7 @@
+## 2.4.1
+
+* Removes references to Flutter v1 android embedding classes.
+
 ## 2.4.0
 
 * Fix android 14 crash
