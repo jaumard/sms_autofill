@@ -30,8 +30,12 @@ class SmsAutoFill {
     if ((defaultTargetPlatform == TargetPlatform.android ||
             defaultTargetPlatform == TargetPlatform.iOS) &&
         !kIsWeb) {
-      final String? hint = await _channel.invokeMethod('requestPhoneHint');
-      return hint;
+      // adding try catch block to handle any exception thrown from method
+      // channel call.
+      try {
+        final String? hint = await _channel.invokeMethod('requestPhoneHint');
+        return hint;
+      } catch (_) {}
     }
     return null;
   }
