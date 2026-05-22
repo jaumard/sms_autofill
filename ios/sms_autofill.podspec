@@ -12,10 +12,9 @@ Flutter plugin to provide SMS code autofill support
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'Your Company' => 'email@example.com' }
   s.source           = { :path => '.' }
-  s.source_files = 'Classes/**/*'
-  s.public_header_files = 'Classes/**/*.h'
+  s.source_files = 'sms_autofill/Sources/sms_autofill/**/*.{h,m}'
+  s.public_header_files = 'sms_autofill/Sources/sms_autofill/include/**/*.h'
   s.dependency 'Flutter'
-
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '12.0'
 end
 
