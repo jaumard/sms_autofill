@@ -22,5 +22,3 @@ flutter:
       android:
         package: com.jaumard.smsautofill
         pluginClass: SmsAutoFillPlugin
-      ios:
-        pluginClass: SmsAutoFillPlugin
