@@ -1,3 +1,7 @@
+## 2.5.0
+
+* Remove iOS plugin that was doing nothing.
+
 ## 2.4.1
 
 * Removes references to Flutter v1 android embedding classes.
