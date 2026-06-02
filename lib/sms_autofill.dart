@@ -15,8 +15,13 @@ class SmsAutoFill {
   factory SmsAutoFill() => _singleton ??= SmsAutoFill._();
 
   SmsAutoFill._() {
-    _channel.setMethodCallHandler(_didReceive);
+    if (_isAndroid) {
+      _channel.setMethodCallHandler(_didReceive);
+    }
   }
+
+  static bool get _isAndroid =>
+      defaultTargetPlatform == TargetPlatform.android && !kIsWeb;
 
   Future<void> _didReceive(MethodCall method) async {
     if (method.method == 'smscode') {
@@ -27,39 +32,36 @@ class SmsAutoFill {
   Stream<String> get code => _code.stream;
 
   Future<String?> get hint async {
-    if ((defaultTargetPlatform == TargetPlatform.android ||
-            defaultTargetPlatform == TargetPlatform.iOS) &&
-        !kIsWeb) {
-      final String? hint = await _channel.invokeMethod('requestPhoneHint');
-      return hint;
+    if (!_isAndroid) {
+      return null;
     }
-    return null;
+    return _channel.invokeMethod<String>('requestPhoneHint');
   }
 
   Future<void> listenForCode({String smsCodeRegexPattern = '\\d{4,6}'}) async {
-    if ((defaultTargetPlatform == TargetPlatform.android ||
-            defaultTargetPlatform == TargetPlatform.iOS) &&
-        !kIsWeb) {
-      await _channel.invokeMethod('listenForCode',
-          <String, String>{'smsCodeRegexPattern': smsCodeRegexPattern});
+    if (!_isAndroid) {
+      return;
     }
+    await _channel.invokeMethod<void>(
+      'listenForCode',
+      <String, String>{'smsCodeRegexPattern': smsCodeRegexPattern},
+    );
   }
 
   Future<void> unregisterListener() async {
-    if ((defaultTargetPlatform == TargetPlatform.android ||
-            defaultTargetPlatform == TargetPlatform.iOS) &&
-        !kIsWeb) {
-      await _channel.invokeMethod('unregisterListener');
+    if (!_isAndroid) {
+      return;
     }
+    await _channel.invokeMethod<void>('unregisterListener');
   }
 
   Future<String> get getAppSignature async {
-    if (defaultTargetPlatform == TargetPlatform.android && !kIsWeb) {
-      final String? appSignature =
-          await _channel.invokeMethod('getAppSignature');
-      return appSignature ?? '';
+    if (!_isAndroid) {
+      return '';
     }
-    return '';
+    final String? appSignature =
+        await _channel.invokeMethod<String>('getAppSignature');
+    return appSignature ?? '';
   }
 }
 
@@ -446,13 +448,18 @@ mixin CodeAutoFill {
   StreamSubscription? _subscription;
 
   void listenForCode({String? smsCodeRegexPattern}) {
+    if (!SmsAutoFill._isAndroid) {
+      return;
+    }
     _subscription = _autoFill.code.listen((code) {
       this.code = code;
       codeUpdated();
     });
-    (smsCodeRegexPattern == null)
-        ? _autoFill.listenForCode()
-        : _autoFill.listenForCode(smsCodeRegexPattern: smsCodeRegexPattern);
+    if (smsCodeRegexPattern == null) {
+      _autoFill.listenForCode();
+    } else {
+      _autoFill.listenForCode(smsCodeRegexPattern: smsCodeRegexPattern);
+    }
   }
 
   Future<void> cancel() async {
