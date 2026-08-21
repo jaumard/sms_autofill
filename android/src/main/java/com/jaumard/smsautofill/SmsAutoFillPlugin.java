@@ -57,19 +57,21 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
 
         @Override
         public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
+            final Result hintResult = pendingHintResult;
             try {
-                if (requestCode == SmsAutoFillPlugin.PHONE_HINT_REQUEST && pendingHintResult != null) {
+                if (requestCode == SmsAutoFillPlugin.PHONE_HINT_REQUEST && hintResult != null) {
                     if (resultCode == Activity.RESULT_OK && data != null) {
                         String phoneNumber =
                                 Identity.getSignInClient(activity).getPhoneNumberFromIntent(data);
-                        pendingHintResult.success(phoneNumber);
+                        completeHintSuccess(hintResult, phoneNumber);
                     } else {
-                        pendingHintResult.success(null);
+                        completeHintSuccess(hintResult, null);
                     }
                     return true;
                 }
             } catch (Exception e) {
                 Log.e("Exception", e.toString());
+                completeHintSuccess(hintResult, null);
             }
             return false;
         }
@@ -86,6 +88,8 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
     public void onMethodCall(MethodCall call, @NonNull final Result result) {
         switch (call.method) {
             case "requestPhoneHint":
+                // release any previous pending request so its late callbacks can't reply twice
+                completeHintSuccess(pendingHintResult, null);
                 pendingHintResult = result;
                 requestHint();
                 break;
@@ -135,11 +139,10 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
 
     @TargetApi(Build.VERSION_CODES.ECLAIR)
     private void requestHint() {
+        final Result hintResult = pendingHintResult;
 
         if (!isSimSupport()) {
-            if (pendingHintResult != null) {
-                pendingHintResult.success(null);
-            }
+            completeHintSuccess(hintResult, null);
             return;
         }
 
@@ -159,7 +162,7 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
                             );
                         } catch (Exception e) {
                             e.printStackTrace();
-                            pendingHintResult.error("ERROR", e.getMessage(), e);
+                            completeHintError(hintResult, "ERROR", e.getMessage());
                         }
                     }
                 })
@@ -167,9 +170,33 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
                     @Override
                     public void onFailure(Exception e) {
                         e.printStackTrace();
-                        pendingHintResult.error("ERROR", e.getMessage(), e);
+                        completeHintError(hintResult, "ERROR", e.getMessage());
                     }
                 });
+    }
+
+    /**
+     * Completes the pending phone hint request with {@code value}, but only if {@code target} is
+     * still the active pending result. Clears {@link #pendingHintResult} before replying so a
+     * {@link Result} can never be replied to twice ("Reply already submitted"), and so late
+     * callbacks from a superseded request are ignored.
+     */
+    private void completeHintSuccess(Result target, String value) {
+        if (target != null && target == pendingHintResult) {
+            pendingHintResult = null;
+            target.success(value);
+        }
+    }
+
+    /**
+     * Error counterpart of {@link #completeHintSuccess(Result, String)} with the same
+     * double-reply protection.
+     */
+    private void completeHintError(Result target, String code, String message) {
+        if (target != null && target == pendingHintResult) {
+            pendingHintResult = null;
+            target.error(code, message, null);
+        }
     }
 
     public boolean isSimSupport() {
