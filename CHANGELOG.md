@@ -1,3 +1,8 @@
+## 2.6.0
+
+* Migrate to Flutter 3.47.1
+* Fix crash on phone hint.
+
 ## 2.5.0
 
 * Remove iOS plugin that was doing nothing.
