@@ -204,6 +204,7 @@ class PhoneFormFieldHint extends StatelessWidget {
   final FormFieldValidator? validator;
   final InputDecoration? decoration;
   final TextField? child;
+  final TextStyle? style;
 
   const PhoneFormFieldHint({
     Key? key,
@@ -215,6 +216,7 @@ class PhoneFormFieldHint extends StatelessWidget {
     this.autoFocus = false,
     this.enabled = true,
     this.focusNode,
+    this.style,
   }) : super(key: key);
 
   @override
@@ -229,7 +231,8 @@ class PhoneFormFieldHint extends StatelessWidget {
         autoFocus: autoFocus,
         enabled: enabled,
         focusNode: focusNode,
-        isFormWidget: true);
+        isFormWidget: true,
+        style: style);
   }
 }
 
@@ -240,6 +243,7 @@ class PhoneFieldHint extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final InputDecoration? decoration;
   final TextField? child;
+  final TextStyle? style;
 
   const PhoneFieldHint({
     Key? key,
@@ -249,6 +253,7 @@ class PhoneFieldHint extends StatelessWidget {
     this.decoration,
     this.autoFocus = false,
     this.focusNode,
+    this.style,
   }) : super(key: key);
 
   @override
@@ -261,6 +266,7 @@ class PhoneFieldHint extends StatelessWidget {
         decoration: decoration,
         autoFocus: autoFocus,
         focusNode: focusNode,
+        style: style,
         isFormWidget: false);
   }
 }
@@ -274,6 +280,7 @@ class _PhoneFieldHint extends StatefulWidget {
   final bool isFormWidget;
   final InputDecoration? decoration;
   final TextField? child;
+  final TextStyle? style;
 
   const _PhoneFieldHint({
     Key? key,
@@ -286,6 +293,7 @@ class _PhoneFieldHint extends StatefulWidget {
     this.autoFocus = false,
     this.enabled = true,
     this.focusNode,
+    this.style,
   }) : super(key: key);
 
   @override
@@ -321,7 +329,6 @@ class _PhoneFieldHintState extends State<_PhoneFieldHint> {
         });
       }
     });
-
     super.initState();
   }
 
@@ -373,6 +380,7 @@ class _PhoneFieldHintState extends State<_PhoneFieldHint> {
       decoration: decoration,
       controller: _controller,
       keyboardType: TextInputType.phone,
+      style: widget.style,
     );
   }
 
@@ -388,6 +396,7 @@ class _PhoneFieldHintState extends State<_PhoneFieldHint> {
       decoration: decoration,
       controller: _controller,
       keyboardType: TextInputType.phone,
+      style: widget.style,
     );
   }
 
