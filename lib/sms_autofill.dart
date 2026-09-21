@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:material_ui/material_ui.dart';
+import 'package:flutter/material.dart' as legacy show Material, MaterialLocalizations, MaterialType;
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart' as legacy show GlobalMaterialLocalizations;
+import 'package:material_ui/material_ui.dart';
 import 'package:pin_input_text_field/pin_input_text_field.dart';
 
 export 'package:pin_input_text_field/pin_input_text_field.dart';
@@ -112,7 +114,8 @@ class _PinFieldAutoFillState extends State<PinFieldAutoFill> with CodeAutoFill {
 
   @override
   Widget build(BuildContext context) {
-    return PinInputTextField(
+    return _LegacyMaterialScope(
+        child: PinInputTextField(
       enabled: widget.enabled,
       pinLength: widget.codeLength,
       decoration: widget.decoration ??
@@ -139,7 +142,7 @@ class _PinFieldAutoFillState extends State<PinFieldAutoFill> with CodeAutoFill {
       inputFormatters: widget.inputFormatters,
       textInputAction: widget.textInputAction,
       onSubmit: widget.onCodeSubmitted,
-    );
+    ));
   }
 
   @override
@@ -347,8 +350,7 @@ class _PhoneFieldHintState extends State<_PhoneFieldHint> {
               : null,
         );
 
-    return widget.child ??
-        _createField(widget.isFormWidget, decoration, widget.validator);
+    return widget.child ?? _MaterialUiScope(child: _createField(widget.isFormWidget, decoration, widget.validator));
   }
 
   @override
@@ -488,7 +490,8 @@ class _TextFieldPinAutoFillState extends State<TextFieldPinAutoFill>
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return _MaterialUiScope(
+        child: TextField(
       enabled: widget.enabled,
       autofocus: widget.autoFocus,
       focusNode: widget.focusNode,
@@ -502,7 +505,7 @@ class _TextFieldPinAutoFillState extends State<TextFieldPinAutoFill>
       keyboardType: TextInputType.numberWithOptions(),
       controller: _textController,
       obscureText: widget.obscureText,
-    );
+    ));
   }
 
   @override
@@ -543,5 +546,53 @@ class _TextFieldPinAutoFillState extends State<TextFieldPinAutoFill>
     _textController.dispose();
     unregisterListener();
     super.dispose();
+  }
+}
+
+/// Provides what `package:flutter/material.dart` widgets (used internally by
+/// `pin_input_text_field`) need when the app is built with `material_ui`.
+class _LegacyMaterialScope extends StatelessWidget {
+  final Widget child;
+
+  const _LegacyMaterialScope({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    Widget result = child;
+    if (LookupBoundary.findAncestorWidgetOfExactType<legacy.Material>(context) == null) {
+      result = legacy.Material(type: legacy.MaterialType.transparency, child: result);
+    }
+    if (Localizations.of<legacy.MaterialLocalizations>(context, legacy.MaterialLocalizations) == null) {
+      result = Localizations.override(
+        context: context,
+        delegates: const [legacy.GlobalMaterialLocalizations.delegate],
+        child: result,
+      );
+    }
+    return result;
+  }
+}
+
+/// Provides what `material_ui` widgets need when the app is still built with
+/// `package:flutter/material.dart`.
+class _MaterialUiScope extends StatelessWidget {
+  final Widget child;
+
+  const _MaterialUiScope({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    Widget result = child;
+    if (LookupBoundary.findAncestorWidgetOfExactType<Material>(context) == null) {
+      result = Material(type: MaterialType.transparency, child: result);
+    }
+    if (Localizations.of<MaterialLocalizations>(context, MaterialLocalizations) == null) {
+      result = Localizations.override(
+        context: context,
+        delegates: const [GlobalMaterialLocalizations.delegate],
+        child: result,
+      );
+    }
+    return result;
   }
 }

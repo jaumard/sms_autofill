@@ -1,6 +1,6 @@
 name: sms_autofill
 description: Flutter plugin to provide SMS code autofill support
-version: 2.6.0
+version: 2.6.1
 homepage: https://github.com/jaumard/sms_autofill
 
 environment:
@@ -14,9 +14,15 @@ dependencies:
     #  ref: dev
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  material_ui: ^1.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
 
 # The following section is specific to Flutter.
-  material_ui: any
 flutter:
   plugin:
     platforms:

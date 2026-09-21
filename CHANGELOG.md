@@ -1,3 +1,8 @@
+## 2.6.1
+
+* Fix "No Material widget found" crash: `PinFieldAutoFill` in apps using `material_ui`, and `TextFieldPinAutoFill`,
+  `PhoneFieldHint`, `PhoneFormFieldHint` in apps using `package:flutter/material.dart`.
+
 ## 2.6.0
 
 * Migrate to Flutter 3.47.1
